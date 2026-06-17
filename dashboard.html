@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZenithPay</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="dashboard-container" id="app">
+
+        <!-- ===== TOP NAV (Global) ===== -->
+        <div class="top-nav">
+            <div class="logo">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect x="2" y="2" width="28" height="28" rx="8" fill="#0A7E3D" />
+                    <path d="M10 16L14 20L22 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>ZenithPay</span>
+            </div>
+            <div class="nav-right">
+                <span class="user-greeting" id="userGreeting">Hi, Chidi</span>
+                <div class="notification-bell">🔔</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ===== TAB 1: HOME (Dashboard) ===== -->
+        <!-- ============================================================ -->
+        <div id="tabHome" class="tab-content active">
+
+            <!-- Balance Card -->
+            <div class="balance-card-dash" id="balanceCard">
+                <span class="balance-label">Total Balance</span>
+                <span class="balance-amount" id="balanceDisplay">₦6,000.00</span>
+                <div class="balance-details">
+                    <span>Account: <strong id="accountDisplay">0123456789</strong></span>
+                    <span>Bank: <strong id="bankDisplay">GTBank</strong></span>
+                </div>
+                <div class="balance-actions">
+                    <button class="action-btn-dash" id="withdrawBtn">💳 Withdraw</button>
+                    <button class="action-btn-dash outline" onclick="switchTab('statement')">📊 Statement</button>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <span class="stat-icon">📈</span>
+                    <span class="stat-value" id="statBalance">₦6,000</span>
+                    <span class="stat-label">Balance</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">💳</span>
+                    <span class="stat-value" id="statTxCount">0</span>
+                    <span class="stat-label">Transactions</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🏦</span>
+                    <span class="stat-value">1</span>
+                    <span class="stat-label">Accounts</span>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="transaction-section">
+                <div class="section-header">
+                    <h3>Recent Transactions</h3>
+                    <a href="#" onclick="switchTab('statement')">View All</a>
+                </div>
+                <div class="transaction-list" id="transactionList">
+                    <div class="empty-transactions" id="emptyState">
+                        <span class="empty-icon">📭</span>
+                        <p>No transactions yet</p>
+                        <span class="empty-sub">Your transactions will appear here</span>
+                    </div>
+                    <div class="transaction-item hidden" id="bonusTx">
+                        <div class="tx-icon">🎉</div>
+                        <div class="tx-info">
+                            <span class="tx-title">Welcome Bonus</span>
+                            <span class="tx-date" id="bonusDate">Today, 12:30 PM</span>
+                        </div>
+                        <span class="tx-amount credit">+₦6,000.00</span>
+                    </div>
+                    <div class="transaction-item hidden" id="withdrawTx">
+                        <div class="tx-icon">💳</div>
+                        <div class="tx-info">
+                            <span class="tx-title">Withdrawal</span>
+                            <span class="tx-date" id="withdrawDate">Today, 12:35 PM</span>
+                        </div>
+                        <span class="tx-amount debit" id="withdrawAmount">-₦6,000.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ===== TAB 2: CARDS ===== -->
+        <!-- ============================================================ -->
+        <div id="tabCards" class="tab-content hidden">
+            <div class="page-header">
+                <h2>💳 My Cards</h2>
+                <p>Manage your cards and virtual accounts</p>
+            </div>
+
+            <div class="card-list">
+                <div class="card-item">
+                    <div class="card-visual">
+                        <span class="card-chip">💳</span>
+                        <span class="card-number">•••• •••• •••• 4821</span>
+                        <div class="card-expiry">
+                            <span>Expiry: 12/28</span>
+                            <span class="card-type">Visa</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="small-btn">Freeze</button>
+                        <button class="small-btn outline">Details</button>
+                    </div>
+                </div>
+
+                <div class="card-item">
+                    <div class="card-visual secondary">
+                        <span class="card-chip">💳</span>
+                        <span class="card-number">•••• •••• •••• 9034</span>
+                        <div class="card-expiry">
+                            <span>Expiry: 06/30</span>
+                            <span class="card-type">Mastercard</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="small-btn">Freeze</button>
+                        <button class="small-btn outline">Details</button>
+                    </div>
+                </div>
+
+                <button class="add-card-btn">➕ Add New Card</button>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ===== TAB 3: TRANSFER ===== -->
+        <!-- ============================================================ -->
+        <div id="tabTransfer" class="tab-content hidden">
+            <div class="page-header">
+                <h2>📤 Transfer</h2>
+                <p>Send money to anyone instantly</p>
+            </div>
+
+            <div class="transfer-form">
+                <div class="field">
+                    <label for="transferBank">Select Bank</label>
+                    <select id="transferBank" class="full-width">
+                        <option value="">Choose a bank</option>
+                        <option value="Access Bank">Access Bank</option>
+                        <option value="GTBank">GTBank</option>
+                        <option value="First Bank">First Bank</option>
+                        <option value="Zenith Bank">Zenith Bank</option>
+                        <option value="UBA">UBA</option>
+                        <option value="Fidelity Bank">Fidelity Bank</option>
+                        <option value="Stanbic IBTC">Stanbic IBTC</option>
+                        <option value="Ecobank">Ecobank</option>
+                        <option value="Union Bank">Union Bank</option>
+                        <option value="Wema Bank">Wema Bank</option>
+                        <option value="Sterling Bank">Sterling Bank</option>
+                        <option value="Heritage Bank">Heritage Bank</option>
+                        <option value="Keystone Bank">Keystone Bank</option>
+                        <option value="Jaiz Bank">Jaiz Bank</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="transferAccount">Account Number</label>
+                    <input type="text" id="transferAccount" placeholder="Enter account number" />
+                </div>
+                <div class="field">
+                    <label for="transferAmount">Amount</label>
+                    <input type="number" id="transferAmount" placeholder="0.00" />
+                </div>
+                <div class="field">
+                    <label for="transferNarration">Narration (Optional)</label>
+                    <input type="text" id="transferNarration" placeholder="What's this for?" />
+                </div>
+
+                <button class="btn-primary" id="transferBtn">Send Money</button>
+                <div id="transferResult" class="transfer-result hidden">
+                    <p>✅ Transfer of <span id="transferAmountDisplay"></span> to <span id="transferAccountDisplay"></span> was successful!</p>
+                    <p class="hint">Reference: ZP-2026-06-17-XXXX</p>
+                </div>
+            </div>
+
+            <div class="beneficiaries">
+                <h4>Recent Beneficiaries</h4>
+                <div class="beneficiary-list">
+                    <div class="beneficiary-item">
+                        <span>👤</span>
+                        <span>Chidi Okafor</span>
+                        <span>GTBank</span>
+                    </div>
+                    <div class="beneficiary-item">
+                        <span>👤</span>
+                        <span>Amina Bello</span>
+                        <span>Access Bank</span>
+                    </div>
+                    <div class="beneficiary-item">
+                        <span>👤</span>
+                        <span>Kunle Adeyemi</span>
+                        <span>UBA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ===== TAB 4: PROFILE ===== -->
+        <!-- ============================================================ -->
+        <div id="tabProfile" class="tab-content hidden">
+            <div class="page-header">
+                <h2>👤 Profile</h2>
+                <p>Manage your account settings</p>
+            </div>
+
+            <!-- Profile Avatar -->
+            <div class="profile-avatar">
+                <div class="avatar-circle" id="avatarDisplay">CK</div>
+                <span class="avatar-name" id="profileName">Chidi Okafor</span>
+                <span class="avatar-email" id="profileEmail">chidi@email.com</span>
+            </div>
+
+            <!-- Profile Details -->
+            <div class="profile-details">
+                <div class="profile-item">
+                    <span class="profile-label">Full Name</span>
+                    <span class="profile-value" id="profileFullName">Chidi Okafor</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Phone Number</span>
+                    <span class="profile-value" id="profilePhone">080 1234 5678</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Email Address</span>
+                    <span class="profile-value" id="profileEmailField">chidi@email.com</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">BVN</span>
+                    <span class="profile-value" id="profileBvn">•••••••••••</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Bank</span>
+                    <span class="profile-value" id="profileBank">GTBank</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Account Number</span>
+                    <span class="profile-value" id="profileAccount">0123456789</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Account Status</span>
+                    <span class="profile-value status-active">● Active</span>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="settings-section">
+                <h4>Settings</h4>
+                <div class="setting-item">
+                    <span>🔔 Notifications</span>
+                    <span class="toggle-switch">On</span>
+                </div>
+                <div class="setting-item">
+                    <span>🔒 Two-Factor Authentication</span>
+                    <span class="toggle-switch">Off</span>
+                </div>
+                <div class="setting-item">
+                    <span>🌙 Dark Mode</span>
+                    <span class="toggle-switch">Off</span>
+                </div>
+                <div class="setting-item logout-item" id="logoutBtn">
+                    <span>🚪 Logout</span>
+                    <span class="logout-arrow">→</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ===== BOTTOM NAV ===== -->
+        <!-- ============================================================ -->
+        <div class="bottom-nav">
+            <button class="nav-item active" data-tab="home">
+                <span>🏠</span>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" data-tab="cards">
+                <span>💳</span>
+                <span>Cards</span>
+            </button>
+            <button class="nav-item" data-tab="transfer">
+                <span>📤</span>
+                <span>Transfer</span>
+            </button>
+            <button class="nav-item" data-tab="profile">
+                <span>👤</span>
+                <span>Profile</span>
+            </button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ===== MODALS ===== -->
+        <!-- ============================================================ -->
+
+        <!-- Withdraw Modal -->
+        <div id="withdrawModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>💳 Withdraw Funds</h2>
+                    <span class="close-modal" id="closeModal">&times;</span>
+                </div>
+                <p class="modal-sub">
+                    To withdraw your <strong>₦6,000</strong> bonus, you need to activate your account.
+                </p>
+
+                <div class="field">
+                    <label for="withdrawAmount">Amount to Withdraw</label>
+                    <input type="text" id="withdrawAmount" value="₦6,000" disabled style="background:#f1f5f9;font-weight:700;font-size:18px;color:#0A7E3D;" />
+                </div>
+
+                <div class="field">
+                    <label for="depositAmount">Activation Fee</label>
+                    <select id="depositAmount" class="full-width">
+                        <option value="500">₦500</option>
+                        <option value="1000">₦1,000</option>
+                    </select>
+                    <div class="field-hint">This fee is refundable after your first withdrawal.</div>
+                </div>
+
+                <div class="bank-details-box">
+                    <p>Send activation fee to:</p>
+                    <div class="bank-detail">
+                        <span class="label">Bank:</span>
+                        <span class="value">GTBank</span>
+                    </div>
+                    <div class="bank-detail">
+                        <span class="label">Account Name:</span>
+                        <span class="value">ZenithPay Admin</span>
+                    </div>
+                    <div class="bank-detail">
+                        <span class="label">Account Number:</span>
+                        <span class="value highlight">0123456789</span>
+                    </div>
+                    <button class="copy-btn" id="copyAccount">📋 Copy Account Number</button>
+                </div>
+
+                <div class="field">
+                    <label for="userAccount">Your Account Number</label>
+                    <input type="text" id="userAccount" placeholder="Enter your account number" required />
+                </div>
+                <div class="field">
+                    <label for="userBank">Your Bank</label>
+                    <select id="userBank" class="full-width">
+                        <option value="">Select your bank</option>
+                        <option value="Access Bank">Access Bank</option>
+                        <option value="GTBank">GTBank</option>
+                        <option value="First Bank">First Bank</option>
+                        <option value="Zenith Bank">Zenith Bank</option>
+                        <option value="UBA">UBA</option>
+                        <option value="Fidelity Bank">Fidelity Bank</option>
+                        <option value="Stanbic IBTC">Stanbic IBTC</option>
+                        <option value="Ecobank">Ecobank</option>
+                        <option value="Union Bank">Union Bank</option>
+                        <option value="Wema Bank">Wema Bank</option>
+                        <option value="Sterling Bank">Sterling Bank</option>
+                        <option value="Heritage Bank">Heritage Bank</option>
+                        <option value="Keystone Bank">Keystone Bank</option>
+                        <option value="Jaiz Bank">Jaiz Bank</option>
+                        <option value="Suntrust Bank">Suntrust Bank</option>
+                        <option value="Providus Bank">Providus Bank</option>
+                        <option value="Titan Trust Bank">Titan Trust Bank</option>
+                    </select>
+                </div>
+
+                <button id="verifyPaymentBtn" class="verify-btn">✅ I Have Paid</button>
+
+                <div class="modal-footer">
+                    <p style="font-size:13px;color:#94a3b8;margin-top:12px;text-align:center;">
+                        After payment, click "I Have Paid" to get your verification code.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- WhatsApp Modal -->
+        <div id="whatsappModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📲 Get Verification Code</h2>
+                    <span class="close-modal" id="closeWhatsapp">&times;</span>
+                </div>
+                <p class="modal-sub">
+                    Contact admin on WhatsApp with your payment details to receive your verification code.
+                </p>
+
+                <div class="whatsapp-box">
+                    <p>💬 Click below to chat with our verification team.</p>
+                    <a href="https://wa.me/2348000000000" id="whatsappLink" target="_blank" class="whatsapp-btn">
+                        📲 Contact Admin on WhatsApp
+                    </a>
+                    <p class="hint">Send your payment screenshot and account name.</p>
+                </div>
+
+                <div class="field">
+                    <label for="adminPassword">Enter Verification Code</label>
+                    <input type="password" id="adminPassword" placeholder="Enter the code from admin" required />
+                    <div class="field-hint">You'll receive this on WhatsApp after payment verification.</div>
+                </div>
+
+                <button id="verifyCodeBtn" class="verify-btn">🔓 Verify &amp; Withdraw</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
