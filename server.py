@@ -12,8 +12,8 @@ os.makedirs('data', exist_ok=True)
 
 # ===== FLUTTERWAVE CONFIG =====
 # ⚠️ REPLACE WITH YOUR FLUTTERWAVE KEYS ⚠️
-FLW_SECRET_KEY = "FLWSECK_TEST-xxxxxxxxxxxxxxxxxxxxxxxxx"
-FLW_PUBLIC_KEY = "FLWPUBK_TEST-xxxxxxxxxxxxxxxxxxxxxxxxx"
+FLW_SECRET_KEY = "FLWSECK_TEST-FLWPUBK_TEST-8d49c114cad90139dcd5584d9b7d0715-X"
+FLW_PUBLIC_KEY = "FLWPUBK_TEST-FLWSECK_TEST-bb194eb1ed4e9c81c29af5cfbe32bc3f-X"
 
 # ===== INITIATE PAYMENT =====
 @app.route('/initiate_payment', methods=['POST'])
