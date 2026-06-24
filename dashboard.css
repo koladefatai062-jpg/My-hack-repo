@@ -353,6 +353,7 @@ body {
     margin-bottom: 18px;
 }
 
+/* BANK DETAILS BOX */
 .bank-box {
     background: #f8fafc;
     border-radius: 12px;
@@ -367,16 +368,25 @@ body {
     margin-bottom: 6px;
 }
 
-.bank-box div {
+.bank-detail {
     display: flex;
     justify-content: space-between;
-    padding: 2px 0;
+    padding: 3px 0;
     font-size: 13px;
 }
 
-.bank-box .highlight {
+.bank-detail .label {
+    color: #64748b;
+}
+
+.bank-detail .value {
+    font-weight: 500;
+}
+
+.bank-detail .value.highlight {
     color: #0a7e3d;
     font-weight: 700;
+    font-size: 16px;
 }
 
 .btn-copy {
@@ -939,4 +949,4 @@ body {
 .success-box .green {
     color: #0a7e3d;
     font-weight: 600;
-}
+    }t
