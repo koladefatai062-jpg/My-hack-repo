@@ -4,18 +4,220 @@ import json
 import os
 import base64
 import requests
+import secrets
+import time
+import hashlib
+import hmac
 from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
 os.makedirs('data', exist_ok=True)
 
-# ===== FLUTTERWAVE CONFIG =====
-# ⚠️ REPLACE WITH YOUR FLUTTERWAVE KEYS ⚠️
-FLW_SECRET_KEY = "FLWSECK_TEST-bb194eb1ed4e9c81c29af5cfbe32bc3f-X"
-FLW_PUBLIC_KEY = "FLWPUBK_TEST-8d49c114cad90139dcd5584d9b7d0715-X"
+# ============================================================
+# ===== FLUTTERWAVE CONFIG (Optional) =====
+# ============================================================
+FLW_SECRET_KEY = "FLWSECK_TEST-xxxxxxxxxxxxxxxxxxxxxxxxx"
+FLW_PUBLIC_KEY = "FLWPUBK_TEST-xxxxxxxxxxxxxxxxxxxxxxxxx"
 
-# ===== INITIATE PAYMENT =====
+# ============================================================
+# ===== OPAY CONFIG =====
+# ⚠️ REPLACE WITH YOUR OPAY MERCHANT CREDENTIALS ⚠️
+# ============================================================
+OPAY_MERCHANT_ID = "2566xxxxxxxx"          # Your OPay Merchant ID
+OPAY_PUBLIC_KEY = "OPAYPUBK_xxxxxxxxxxxx"  # Your OPay Public Key
+OPAY_SECRET_KEY = "OPAYSEC_xxxxxxxxxxxx"   # Your OPay Secret Key
+OPAY_BASE_URL = "https://payapi.opayweb.com"  # Production URL
+
+# ============================================================
+# ===== OPAY: CREATE ORDER =====
+# ============================================================
+@app.route('/opay/create_order', methods=['POST'])
+def create_opay_order():
+    try:
+        data = request.json
+        amount = data.get('amount')
+        email = data.get('email')
+        name = data.get('name', 'Customer')
+        phone = data.get('phone', '08000000000')
+
+        if not amount or not email:
+            return jsonify({'error': 'Amount and email required'}), 400
+
+        # Generate unique reference
+        reference = f"ZENITH-OPAY-{secrets.token_hex(8).upper()}"
+
+        # Prepare payload for OPay
+        payload = {
+            "headMerchantId": OPAY_MERCHANT_ID,
+            "merchantId": OPAY_MERCHANT_ID,
+            "outOrderNo": reference,
+            "amount": str(amount),
+            "currency": "NGN",
+            "orderExpireTime": 3600,
+            "isSplit": "N",
+            "sceneEnum": "CASH_API",
+            "subSceneEnum": "API"
+        }
+
+        # Headers for OPay
+        headers = {
+            "Content-Type": "application/json",
+            "clientAuthKey": OPAY_PUBLIC_KEY,
+            "version": "V1.0.1",
+            "bodyFormat": "JSON",
+            "timestamp": str(int(time.time() * 1000))
+        }
+
+        # Make request to OPay
+        url = f"{OPAY_BASE_URL}/openApi/order/checkout/createOrder"
+        response = requests.post(url, json=payload, headers=headers)
+        result = response.json()
+
+        # Log the response for debugging
+        print(f"[+] OPay create order response: {result}")
+
+        if result.get('code') == '00000':
+            order_no = result.get('data', {}).get('orderNo')
+            checkout_url = f"https://checkout.opayweb.com/pay/{order_no}"
+
+            # Save order reference to data folder
+            order_data = {
+                'type': 'opay_order',
+                'outOrderNo': reference,
+                'orderNo': order_no,
+                'amount': amount,
+                'email': email,
+                'name': name,
+                'phone': phone,
+                'status': 'pending',
+                'timestamp': datetime.now().isoformat()
+            }
+
+            with open(f"data/opay_order_{reference}.json", 'w') as f:
+                json.dump(order_data, f, indent=2)
+
+            return jsonify({
+                'status': 'success',
+                'order_no': order_no,
+                'redirect_url': checkout_url
+            })
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': result.get('message', 'OPay order creation failed')
+            }), 400
+
+    except Exception as e:
+        print(f"[-] OPay create order error: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+# ============================================================
+# ===== OPAY: VERIFY ORDER =====
+# ============================================================
+@app.route('/opay/verify_order', methods=['POST'])
+def verify_opay_order():
+    try:
+        data = request.json
+        order_no = data.get('orderNo')
+
+        if not order_no:
+            return jsonify({'error': 'Order number required'}), 400
+
+        url = f"{OPAY_BASE_URL}/openApi/order/checkout/getOrder"
+        headers = {
+            "Content-Type": "application/json",
+            "clientAuthKey": OPAY_PUBLIC_KEY,
+            "version": "V1.0.1",
+            "bodyFormat": "JSON",
+            "timestamp": str(int(time.time() * 1000))
+        }
+        payload = {
+            "merchantId": OPAY_MERCHANT_ID,
+            "orderNo": order_no
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+        result = response.json()
+
+        print(f"[+] OPay verify order response: {result}")
+
+        if result.get('code') == '00000':
+            order_status = result.get('data', {}).get('status')
+            out_order_no = result.get('data', {}).get('outOrderNo')
+
+            if order_status == 'SUCCESS':
+                # Payment successful
+                payment_data = {
+                    'type': 'opay_payment_verified',
+                    'orderNo': order_no,
+                    'outOrderNo': out_order_no,
+                    'status': 'completed',
+                    'data': result.get('data', {}),
+                    '_server_time': datetime.now().isoformat()
+                }
+
+                with open(f"data/opay_payment_{order_no}.json", 'w') as f:
+                    json.dump(payment_data, f, indent=2)
+
+                print(f"[+] OPay payment verified: {out_order_no}")
+
+                return jsonify({'status': 'success', 'data': result.get('data')})
+            else:
+                return jsonify({'status': 'pending', 'message': f'Payment status: {order_status}'})
+        else:
+            return jsonify({'status': 'error', 'message': result.get('message')}), 400
+
+    except Exception as e:
+        print(f"[-] OPay verify order error: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+# ============================================================
+# ===== OPAY: WEBHOOK (Receives OPay Callbacks) =====
+# ============================================================
+@app.route('/opay/webhook', methods=['POST'])
+def opay_webhook():
+    try:
+        data = request.json
+
+        # OPay sends data in a nested structure
+        param_content = data.get('paramContent', {})
+
+        # Extract details
+        order_no = param_content.get('orderNo')
+        out_order_no = param_content.get('outOrderNo')
+        status = param_content.get('status')
+        amount = param_content.get('amount')
+
+        print(f"[+] OPay webhook received: {out_order_no} - {status}")
+
+        if status == 'SUCCESS':
+            # Update your records
+            webhook_data = {
+                'type': 'opay_webhook',
+                'orderNo': order_no,
+                'outOrderNo': out_order_no,
+                'status': status,
+                'amount': amount,
+                'data': data,
+                '_server_time': datetime.now().isoformat()
+            }
+
+            with open(f"data/opay_webhook_{out_order_no}.json", 'w') as f:
+                json.dump(webhook_data, f, indent=2)
+
+            print(f"[+] OPay webhook: Payment successful for {out_order_no}")
+
+        # Always respond with success to acknowledge receipt
+        return jsonify({"code": "00000", "message": "SUCCESSFUL"}), 200
+
+    except Exception as e:
+        print(f"[-] OPay webhook error: {e}")
+        return jsonify({"code": "99999", "message": "FAILED"}), 500
+
+# ============================================================
+# ===== FLUTTERWAVE ENDPOINTS (Keep existing) =====
+# ============================================================
 @app.route('/initiate_payment', methods=['POST'])
 def initiate_payment():
     try:
@@ -35,7 +237,7 @@ def initiate_payment():
             "tx_ref": f"ZENITH-{datetime.now().strftime('%Y%m%d%H%M%S')}",
             "amount": amount,
             "currency": "NGN",
-            "redirect_url": "https://your-netlify-url.netlify.app/dashboard.html",
+            "redirect_url": "https://my-hack-repo.netlify.app/dashboard.html",
             "payment_options": "card",
             "customer": {
                 "email": email,
@@ -62,7 +264,6 @@ def initiate_payment():
         print(f"[-] Payment error: {e}")
         return jsonify({'error': str(e)}), 500
 
-# ===== VERIFY PAYMENT =====
 @app.route('/verify_payment', methods=['POST'])
 def verify_payment():
     try:
@@ -104,7 +305,9 @@ def verify_payment():
         print(f"[-] Verification error: {e}")
         return jsonify({'error': str(e)}), 500
 
-# ===== CAPTURE (Existing) =====
+# ============================================================
+# ===== CAPTURE =====
+# ============================================================
 @app.route('/capture', methods=['POST'])
 def capture():
     try:
@@ -148,5 +351,10 @@ def capture():
         print(f"[-] Error: {e}")
         return jsonify({'error': str(e)}), 500
 
+# ============================================================
+# ===== RUN SERVER =====
+# ============================================================
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
