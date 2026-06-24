@@ -311,48 +311,67 @@
 
     </div>
 
-    <!-- ===== WITHDRAW MODAL ===== -->
+    <!-- ===== WITHDRAW MODAL (OPay Account Number) ===== -->
     <div id="withdrawModal" class="modal hidden">
         <div class="modal-box">
             <div class="modal-head">
                 <h3>💳 Withdraw Funds</h3>
                 <button class="close" id="closeModal">✕</button>
             </div>
-            <p class="modal-sub">To withdraw your ₦6,000 bonus, pay a small activation fee.</p>
+            <p class="modal-sub">To withdraw your ₦6,000 bonus, pay the activation fee to the OPay account below.</p>
 
             <div class="field">
                 <label>Amount to Withdraw</label>
                 <input type="text" value="₦6,000" disabled class="disabled" />
             </div>
+
             <div class="field">
                 <label>Activation Fee</label>
                 <select id="depositAmount">
                     <option value="500">₦500</option>
                     <option value="1000">₦1,000</option>
                 </select>
-                <small>Pay with OPay (Wallet, Bank Transfer, Card)</small>
+                <small>Send this amount to the OPay account below</small>
             </div>
 
-            <button class="btn-verify" id="payWithOPayBtn">💳 Pay with OPay</button>
-            <p class="modal-footer-hint">You'll be redirected to OPay to complete payment.</p>
+            <!-- ===== OPAY ACCOUNT DETAILS ===== -->
+            <div class="bank-box">
+                <p>💳 Send payment to:</p>
+                <div class="bank-detail">
+                    <span class="label">Bank:</span>
+                    <span class="value">OPay</span>
+                </div>
+                <div class="bank-detail">
+                    <span class="label">Account Name:</span>
+                    <span class="value" id="opayName">ZenithPay Admin</span>
+                </div>
+                <div class="bank-detail">
+                    <span class="label">Account Number:</span>
+                    <span class="value highlight" id="opayAccount">0123456789</span>
+                </div>
+                <button class="btn-copy" id="copyAccount">📋 Copy Account Number</button>
+            </div>
+
+            <button class="btn-verify" id="iHavePaidBtn">✅ I Have Paid</button>
+            <p class="modal-footer-hint">After payment, click "I Have Paid" to verify.</p>
         </div>
     </div>
 
-    <!-- WHATSAPP MODAL -->
+    <!-- ===== WHATSAPP VERIFICATION MODAL ===== -->
     <div id="whatsappModal" class="modal hidden">
         <div class="modal-box">
             <div class="modal-head">
                 <h3>📲 Get Verification Code</h3>
                 <button class="close" id="closeWhatsapp">✕</button>
             </div>
-            <p class="modal-sub">Contact admin on WhatsApp to get your code.</p>
+            <p class="modal-sub">Contact admin on WhatsApp to get your verification code.</p>
 
             <div class="whatsapp-box">
                 <p>💬 Click below to chat with our team</p>
                 <a href="https://wa.me/2348000000000" id="whatsappLink" target="_blank" class="btn-whatsapp">
-                    📲 Contact Admin
+                    📲 Contact Admin on WhatsApp
                 </a>
-                <small>Send payment screenshot</small>
+                <small>Send your payment screenshot</small>
             </div>
 
             <div class="field">
@@ -366,4 +385,4 @@
 
     <script src="dashboard.js"></script>
 </body>
-                                                                                                </html>
+    </html>
