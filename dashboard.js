@@ -4,7 +4,7 @@ var C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
 var ADMIN_PASSWORD = 'ZENITH2026';
 var OPAY_ACCOUNT = '9120711977';
 var OPAY_NAME = 'KOLADE SOLOMON';
-var WHATSAPP_NUMBER = '2348000000000';
+var WHATSAPP_NUMBER = '2349132683379';
 
 // ============================================================
 // ===== DASHBOARD LOAD =====
@@ -424,4 +424,16 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'success.html';
         }, 1500);
     });
+});
+// ===== TEST: Direct click on I Have Paid =====
+document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('iHavePaidBtn');
+    if (btn) {
+        console.log('✅ iHavePaidBtn found!');
+        btn.addEventListener('click', function() {
+            alert('🔥 I Have Paid button clicked directly!');
+        });
+    } else {
+        console.error('❌ iHavePaidBtn NOT found in the DOM!');
+    }
 });
