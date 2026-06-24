@@ -329,7 +329,7 @@
 
     </div>
 
-    <!-- ===== WITHDRAW MODAL (UPDATED WITH FLUTTERWAVE) ===== -->
+    <!-- ===== WITHDRAW MODAL (UPDATED WITH OPAY) ===== -->
     <div id="withdrawModal" class="modal hidden">
         <div class="modal-box">
             <div class="modal-head">
@@ -348,11 +348,12 @@
                     <option value="500">₦500</option>
                     <option value="1000">₦1,000</option>
                 </select>
-                <small>Pay with Flutterwave (Card, Bank, USSD)</small>
+                <small>Pay with OPay (Wallet, Bank Transfer, Card)</small>
             </div>
 
-            <button class="btn-verify" id="payWithFlutterwaveBtn">💳 Pay with Flutterwave</button>
-            <p class="modal-footer-hint">You'll be redirected to complete payment.</p>
+            <!-- OPAY PAYMENT BUTTON -->
+            <button class="btn-verify" id="payWithOPayBtn">💳 Pay with OPay</button>
+            <p class="modal-footer-hint">You'll be redirected to OPay to complete payment.</p>
         </div>
     </div>
 
@@ -384,4 +385,4 @@
 
     <script src="script.js"></script>
 </body>
-                </html>
+    </html>
