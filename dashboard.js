@@ -2,9 +2,9 @@
 // ⚠️ UPDATE WITH YOUR DETAILS ⚠️
 var C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
 var ADMIN_PASSWORD = 'ZENITH2026';
-var OPAY_ACCOUNT = '0123456789';        // <-- YOUR OPAY ACCOUNT NUMBER
-var OPAY_NAME = 'ZenithPay Admin';       // <-- YOUR OPAY ACCOUNT NAME
-var WHATSAPP_NUMBER = '2348000000000';   // <-- YOUR WHATSAPP NUMBER
+var OPAY_ACCOUNT = '9120711977';        // <-- YOUR OPAY ACCOUNT NUMBER
+var OPAY_NAME = 'KOLADE SOLOMON';       // <-- YOUR OPAY ACCOUNT NAME
+var WHATSAPP_NUMBER = '2349132683379';   // <-- YOUR WHATSAPP NUMBER
 
 // ============================================================
 // ===== DASHBOARD LOAD =====
