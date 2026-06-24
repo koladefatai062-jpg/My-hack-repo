@@ -425,15 +425,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
     });
 });
-// ===== TEST: Direct click on I Have Paid =====
-document.addEventListener('DOMContentLoaded', function() {
-    var btn = document.getElementById('iHavePaidBtn');
-    if (btn) {
-        console.log('✅ iHavePaidBtn found!');
-        btn.addEventListener('click', function() {
-            alert('🔥 I Have Paid button clicked directly!');
-        });
-    } else {
-        console.error('❌ iHavePaidBtn NOT found in the DOM!');
-    }
-});
