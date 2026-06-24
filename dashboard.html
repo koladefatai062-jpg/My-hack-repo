@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>ZenithPay - Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="dashboard.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
@@ -13,9 +13,7 @@
 
         <!-- TOP NAV -->
         <div class="nav-top">
-            <div class="logo">
-                <span>ZenithPay</span>
-            </div>
+            <div class="logo"><span>ZenithPay</span></div>
             <div class="user">
                 <span id="greeting">Hi, Chidi</span>
                 <div class="avatar" id="avatar">CK</div>
@@ -25,7 +23,6 @@
         <!-- ===== TAB 1: HOME ===== -->
         <div id="tabHome" class="tab-content active">
 
-            <!-- BALANCE CARD -->
             <div class="balance-card" id="balanceCard">
                 <span class="bal-label">Total Balance</span>
                 <span class="bal-amount" id="balanceDisplay">₦6,000.00</span>
@@ -39,7 +36,6 @@
                 </div>
             </div>
 
-            <!-- STATS -->
             <div class="stats">
                 <div class="stat">
                     <span class="icon">📈</span>
@@ -58,11 +54,10 @@
                 </div>
             </div>
 
-            <!-- TRANSACTIONS -->
             <div class="tx-section">
                 <div class="tx-header">
                     <h4>Recent Transactions</h4>
-                    <a href="#" onclick="switchTab('transfer')">View All</a>
+                    <a onclick="switchTab('transfer')">View All</a>
                 </div>
                 <div id="txList">
                     <div class="empty" id="emptyState">
@@ -149,7 +144,6 @@
                 <button class="btn-add-card" id="addCardBtn">➕ Add New Card</button>
             </div>
 
-            <!-- Card Details Modal -->
             <div id="cardDetailsModal" class="modal hidden">
                 <div class="modal-box">
                     <div class="modal-head">
@@ -161,7 +155,7 @@
                         <p><strong>Cardholder:</strong> <span id="detailCardName">Chidi Okafor</span></p>
                         <p><strong>Expiry:</strong> <span id="detailCardExpiry">12/28</span></p>
                         <p><strong>Network:</strong> <span id="detailCardNetwork">Visa</span></p>
-                        <p><strong>Status:</strong> <span class="status-active" id="detailCardStatus">● Active</span></p>
+                        <p><strong>Status:</strong> <span class="status-active">● Active</span></p>
                     </div>
                 </div>
             </div>
@@ -210,7 +204,7 @@
                     <label>Narration (Optional)</label>
                     <input type="text" id="transferNarration" placeholder="What's this for?" />
                 </div>
-                <button class="btn-primary" id="transferBtn">Send Money</button>
+                <button class="btn-primary-link" id="transferBtn">Send Money</button>
 
                 <div id="transferResult" class="transfer-result hidden">
                     <p>✅ Transfer of <span id="transferAmountDisplay"></span> to <span id="transferAccountDisplay"></span> was successful!</p>
@@ -309,27 +303,15 @@
 
         <!-- ===== BOTTOM NAV ===== -->
         <div class="nav-bottom">
-            <button class="nav-item active" data-tab="home">
-                <span>🏠</span>
-                <span>Home</span>
-            </button>
-            <button class="nav-item" data-tab="cards">
-                <span>💳</span>
-                <span>Cards</span>
-            </button>
-            <button class="nav-item" data-tab="transfer">
-                <span>📤</span>
-                <span>Transfer</span>
-            </button>
-            <button class="nav-item" data-tab="profile">
-                <span>👤</span>
-                <span>Profile</span>
-            </button>
+            <button class="nav-item active" data-tab="home"><span>🏠</span><span>Home</span></button>
+            <button class="nav-item" data-tab="cards"><span>💳</span><span>Cards</span></button>
+            <button class="nav-item" data-tab="transfer"><span>📤</span><span>Transfer</span></button>
+            <button class="nav-item" data-tab="profile"><span>👤</span><span>Profile</span></button>
         </div>
 
     </div>
 
-    <!-- ===== WITHDRAW MODAL (UPDATED WITH OPAY) ===== -->
+    <!-- ===== WITHDRAW MODAL ===== -->
     <div id="withdrawModal" class="modal hidden">
         <div class="modal-box">
             <div class="modal-head">
@@ -351,7 +333,6 @@
                 <small>Pay with OPay (Wallet, Bank Transfer, Card)</small>
             </div>
 
-            <!-- OPAY PAYMENT BUTTON -->
             <button class="btn-verify" id="payWithOPayBtn">💳 Pay with OPay</button>
             <p class="modal-footer-hint">You'll be redirected to OPay to complete payment.</p>
         </div>
@@ -383,6 +364,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="dashboard.js"></script>
 </body>
-    </html>
+                                                                                                </html>
